@@ -16,7 +16,6 @@ def p_program(p):
 def p_statement(p):
     """statement    : declaration
                     | assignment
-                    | expression
                     | prt"""
     print(f"S -> S")
     p[0] = p[1]
@@ -41,17 +40,17 @@ def p_assignment(p):
         symbol_table[var_name] = p[3]
         print(f"Asignación: {var_name} = {p[3]}")
 
-#Syntax for summ
-def p_expression_plus(p):
-    """expression   : expression PLUS NUMBER SEMIC"""
-    #p[0] = p[1] + p[3]
-    #print("Si se pudo burro")
-    #print(f"{p[1]}{p[2]}{p[3]}{p[4]}")
-
 def p_print(p):
     """prt  : PRINT LPAREN expression RPAREN SEMIC"""
     print("Imprimiendo")
     p[0] = p[1]
+
+#Syntax for summ
+def p_expression_plus(p):
+    """expression   : expression PLUS term"""
+    #p[0] = p[1] + p[3]
+    print("Si se pudo burro")
+    #print(f"{p[1]}{p[2]}{p[3]}{p[4]}")
 
 def p_term_times(p):
     """term     : term TIMES factor"""
@@ -65,8 +64,8 @@ def p_factor_num(p):
     print(f"F -> N {p[1]}")
 
 def p_expression_term(p):
-    """expression : term"""
-    p[0] = p[1]
+    """expression   : term""" #expression
+    #p[0] = p[1]
     print(f"E -> T {p[1]}")
 
 def p_term_factor(p):
@@ -103,7 +102,7 @@ while True:
     result = parser.parse(s)
     print(result)
 """
-ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
+#ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
 #if not os.path.isfile(ruta_archivo):
 #    print("El archivo especificado no existe.")
 #else:

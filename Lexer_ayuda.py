@@ -68,7 +68,7 @@ lexer = lex.lex()
 
 
 
-ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
-codigo = leer_archivo(ruta_archivo)
+#ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
+#codigo = leer_archivo(ruta_archivo)
 
-lexer.input(codigo)
+#lexer.input(codigo)
