@@ -2,3 +2,9 @@ Falta en la asignación pasar variables (creo)   YA !
 bibliotecas                                 YA ! (Si se quieren agregar constantes nomás actualizar)
 if - else
 Y parentesis para las op aritmeticas        YA !
+
+Los codigos que se estan usando son:
+  main.py
+  Syntax.py
+  Lexer_ayuda.py
+  ejemplo.c
