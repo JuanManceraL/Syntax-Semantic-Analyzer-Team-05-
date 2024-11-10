@@ -1,0 +1,397 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DIVIDE
+    MINUS
+
+Grammar
+
+Rule 0     S' -> statements
+Rule 1     statements -> statements statement
+Rule 2     statements -> statement
+Rule 3     statement -> declaration
+Rule 4     statement -> assignment
+Rule 5     statement -> expression
+Rule 6     statement -> prt
+Rule 7     declaration -> TYPE IDENTIFIER SEMIC
+Rule 8     assignment -> IDENTIFIER EQUALS expression SEMIC
+Rule 9     expression -> expression PLUS NUMBER SEMIC
+Rule 10    prt -> PRINT LPAREN expression RPAREN SEMIC
+Rule 11    term -> term TIMES factor
+Rule 12    factor -> NUMBER
+Rule 13    expression -> term
+Rule 14    term -> factor
+
+Terminals, with rules where they appear
+
+DIVIDE               : 
+EQUALS               : 8
+IDENTIFIER           : 7 8
+LPAREN               : 10
+MINUS                : 
+NUMBER               : 9 12
+PLUS                 : 9
+PRINT                : 10
+RPAREN               : 10
+SEMIC                : 7 8 9 10
+TIMES                : 11
+TYPE                 : 7
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 4
+declaration          : 3
+expression           : 5 8 9 10
+factor               : 11 14
+prt                  : 6
+statement            : 1 2
+statements           : 1 0
+term                 : 11 13
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statements
+    (1) statements -> . statements statement
+    (2) statements -> . statement
+    (3) statement -> . declaration
+    (4) statement -> . assignment
+    (5) statement -> . expression
+    (6) statement -> . prt
+    (7) declaration -> . TYPE IDENTIFIER SEMIC
+    (8) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (9) expression -> . expression PLUS NUMBER SEMIC
+    (13) expression -> . term
+    (10) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (11) term -> . term TIMES factor
+    (14) term -> . factor
+    (12) factor -> . NUMBER
+
+    TYPE            shift and go to state 7
+    IDENTIFIER      shift and go to state 8
+    PRINT           shift and go to state 11
+    NUMBER          shift and go to state 9
+
+    statements                     shift and go to state 1
+    statement                      shift and go to state 2
+    declaration                    shift and go to state 3
+    assignment                     shift and go to state 4
+    expression                     shift and go to state 5
+    prt                            shift and go to state 6
+    term                           shift and go to state 10
+    factor                         shift and go to state 12
+
+state 1
+
+    (0) S' -> statements .
+    (1) statements -> statements . statement
+    (3) statement -> . declaration
+    (4) statement -> . assignment
+    (5) statement -> . expression
+    (6) statement -> . prt
+    (7) declaration -> . TYPE IDENTIFIER SEMIC
+    (8) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (9) expression -> . expression PLUS NUMBER SEMIC
+    (13) expression -> . term
+    (10) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (11) term -> . term TIMES factor
+    (14) term -> . factor
+    (12) factor -> . NUMBER
+
+    TYPE            shift and go to state 7
+    IDENTIFIER      shift and go to state 8
+    PRINT           shift and go to state 11
+    NUMBER          shift and go to state 9
+
+    statement                      shift and go to state 13
+    declaration                    shift and go to state 3
+    assignment                     shift and go to state 4
+    expression                     shift and go to state 5
+    prt                            shift and go to state 6
+    term                           shift and go to state 10
+    factor                         shift and go to state 12
+
+state 2
+
+    (2) statements -> statement .
+
+    TYPE            reduce using rule 2 (statements -> statement .)
+    IDENTIFIER      reduce using rule 2 (statements -> statement .)
+    PRINT           reduce using rule 2 (statements -> statement .)
+    NUMBER          reduce using rule 2 (statements -> statement .)
+    $end            reduce using rule 2 (statements -> statement .)
+
+
+state 3
+
+    (3) statement -> declaration .
+
+    TYPE            reduce using rule 3 (statement -> declaration .)
+    IDENTIFIER      reduce using rule 3 (statement -> declaration .)
+    PRINT           reduce using rule 3 (statement -> declaration .)
+    NUMBER          reduce using rule 3 (statement -> declaration .)
+    $end            reduce using rule 3 (statement -> declaration .)
+
+
+state 4
+
+    (4) statement -> assignment .
+
+    TYPE            reduce using rule 4 (statement -> assignment .)
+    IDENTIFIER      reduce using rule 4 (statement -> assignment .)
+    PRINT           reduce using rule 4 (statement -> assignment .)
+    NUMBER          reduce using rule 4 (statement -> assignment .)
+    $end            reduce using rule 4 (statement -> assignment .)
+
+
+state 5
+
+    (5) statement -> expression .
+    (9) expression -> expression . PLUS NUMBER SEMIC
+
+    TYPE            reduce using rule 5 (statement -> expression .)
+    IDENTIFIER      reduce using rule 5 (statement -> expression .)
+    PRINT           reduce using rule 5 (statement -> expression .)
+    NUMBER          reduce using rule 5 (statement -> expression .)
+    $end            reduce using rule 5 (statement -> expression .)
+    PLUS            shift and go to state 14
+
+
+state 6
+
+    (6) statement -> prt .
+
+    TYPE            reduce using rule 6 (statement -> prt .)
+    IDENTIFIER      reduce using rule 6 (statement -> prt .)
+    PRINT           reduce using rule 6 (statement -> prt .)
+    NUMBER          reduce using rule 6 (statement -> prt .)
+    $end            reduce using rule 6 (statement -> prt .)
+
+
+state 7
+
+    (7) declaration -> TYPE . IDENTIFIER SEMIC
+
+    IDENTIFIER      shift and go to state 15
+
+
+state 8
+
+    (8) assignment -> IDENTIFIER . EQUALS expression SEMIC
+
+    EQUALS          shift and go to state 16
+
+
+state 9
+
+    (12) factor -> NUMBER .
+
+    TIMES           reduce using rule 12 (factor -> NUMBER .)
+    PLUS            reduce using rule 12 (factor -> NUMBER .)
+    TYPE            reduce using rule 12 (factor -> NUMBER .)
+    IDENTIFIER      reduce using rule 12 (factor -> NUMBER .)
+    PRINT           reduce using rule 12 (factor -> NUMBER .)
+    NUMBER          reduce using rule 12 (factor -> NUMBER .)
+    $end            reduce using rule 12 (factor -> NUMBER .)
+    SEMIC           reduce using rule 12 (factor -> NUMBER .)
+    RPAREN          reduce using rule 12 (factor -> NUMBER .)
+
+
+state 10
+
+    (13) expression -> term .
+    (11) term -> term . TIMES factor
+
+    PLUS            reduce using rule 13 (expression -> term .)
+    TYPE            reduce using rule 13 (expression -> term .)
+    IDENTIFIER      reduce using rule 13 (expression -> term .)
+    PRINT           reduce using rule 13 (expression -> term .)
+    NUMBER          reduce using rule 13 (expression -> term .)
+    $end            reduce using rule 13 (expression -> term .)
+    SEMIC           reduce using rule 13 (expression -> term .)
+    RPAREN          reduce using rule 13 (expression -> term .)
+    TIMES           shift and go to state 17
+
+
+state 11
+
+    (10) prt -> PRINT . LPAREN expression RPAREN SEMIC
+
+    LPAREN          shift and go to state 18
+
+
+state 12
+
+    (14) term -> factor .
+
+    TIMES           reduce using rule 14 (term -> factor .)
+    PLUS            reduce using rule 14 (term -> factor .)
+    TYPE            reduce using rule 14 (term -> factor .)
+    IDENTIFIER      reduce using rule 14 (term -> factor .)
+    PRINT           reduce using rule 14 (term -> factor .)
+    NUMBER          reduce using rule 14 (term -> factor .)
+    $end            reduce using rule 14 (term -> factor .)
+    SEMIC           reduce using rule 14 (term -> factor .)
+    RPAREN          reduce using rule 14 (term -> factor .)
+
+
+state 13
+
+    (1) statements -> statements statement .
+
+    TYPE            reduce using rule 1 (statements -> statements statement .)
+    IDENTIFIER      reduce using rule 1 (statements -> statements statement .)
+    PRINT           reduce using rule 1 (statements -> statements statement .)
+    NUMBER          reduce using rule 1 (statements -> statements statement .)
+    $end            reduce using rule 1 (statements -> statements statement .)
+
+
+state 14
+
+    (9) expression -> expression PLUS . NUMBER SEMIC
+
+    NUMBER          shift and go to state 19
+
+
+state 15
+
+    (7) declaration -> TYPE IDENTIFIER . SEMIC
+
+    SEMIC           shift and go to state 20
+
+
+state 16
+
+    (8) assignment -> IDENTIFIER EQUALS . expression SEMIC
+    (9) expression -> . expression PLUS NUMBER SEMIC
+    (13) expression -> . term
+    (11) term -> . term TIMES factor
+    (14) term -> . factor
+    (12) factor -> . NUMBER
+
+    NUMBER          shift and go to state 9
+
+    expression                     shift and go to state 21
+    term                           shift and go to state 10
+    factor                         shift and go to state 12
+
+state 17
+
+    (11) term -> term TIMES . factor
+    (12) factor -> . NUMBER
+
+    NUMBER          shift and go to state 9
+
+    factor                         shift and go to state 22
+
+state 18
+
+    (10) prt -> PRINT LPAREN . expression RPAREN SEMIC
+    (9) expression -> . expression PLUS NUMBER SEMIC
+    (13) expression -> . term
+    (11) term -> . term TIMES factor
+    (14) term -> . factor
+    (12) factor -> . NUMBER
+
+    NUMBER          shift and go to state 9
+
+    expression                     shift and go to state 23
+    term                           shift and go to state 10
+    factor                         shift and go to state 12
+
+state 19
+
+    (9) expression -> expression PLUS NUMBER . SEMIC
+
+    SEMIC           shift and go to state 24
+
+
+state 20
+
+    (7) declaration -> TYPE IDENTIFIER SEMIC .
+
+    TYPE            reduce using rule 7 (declaration -> TYPE IDENTIFIER SEMIC .)
+    IDENTIFIER      reduce using rule 7 (declaration -> TYPE IDENTIFIER SEMIC .)
+    PRINT           reduce using rule 7 (declaration -> TYPE IDENTIFIER SEMIC .)
+    NUMBER          reduce using rule 7 (declaration -> TYPE IDENTIFIER SEMIC .)
+    $end            reduce using rule 7 (declaration -> TYPE IDENTIFIER SEMIC .)
+
+
+state 21
+
+    (8) assignment -> IDENTIFIER EQUALS expression . SEMIC
+    (9) expression -> expression . PLUS NUMBER SEMIC
+
+    SEMIC           shift and go to state 25
+    PLUS            shift and go to state 14
+
+
+state 22
+
+    (11) term -> term TIMES factor .
+
+    TIMES           reduce using rule 11 (term -> term TIMES factor .)
+    PLUS            reduce using rule 11 (term -> term TIMES factor .)
+    TYPE            reduce using rule 11 (term -> term TIMES factor .)
+    IDENTIFIER      reduce using rule 11 (term -> term TIMES factor .)
+    PRINT           reduce using rule 11 (term -> term TIMES factor .)
+    NUMBER          reduce using rule 11 (term -> term TIMES factor .)
+    $end            reduce using rule 11 (term -> term TIMES factor .)
+    SEMIC           reduce using rule 11 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 11 (term -> term TIMES factor .)
+
+
+state 23
+
+    (10) prt -> PRINT LPAREN expression . RPAREN SEMIC
+    (9) expression -> expression . PLUS NUMBER SEMIC
+
+    RPAREN          shift and go to state 26
+    PLUS            shift and go to state 14
+
+
+state 24
+
+    (9) expression -> expression PLUS NUMBER SEMIC .
+
+    PLUS            reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    TYPE            reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    IDENTIFIER      reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    PRINT           reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    NUMBER          reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    $end            reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    SEMIC           reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+    RPAREN          reduce using rule 9 (expression -> expression PLUS NUMBER SEMIC .)
+
+
+state 25
+
+    (8) assignment -> IDENTIFIER EQUALS expression SEMIC .
+
+    TYPE            reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    IDENTIFIER      reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    PRINT           reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    NUMBER          reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    $end            reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+
+
+state 26
+
+    (10) prt -> PRINT LPAREN expression RPAREN . SEMIC
+
+    SEMIC           shift and go to state 27
+
+
+state 27
+
+    (10) prt -> PRINT LPAREN expression RPAREN SEMIC .
+
+    TYPE            reduce using rule 10 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    IDENTIFIER      reduce using rule 10 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    PRINT           reduce using rule 10 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    NUMBER          reduce using rule 10 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    $end            reduce using rule 10 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+
