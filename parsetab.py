@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIVIDE EQUALS EXP IDENTIFIER LPAREN MINUS NUMBER PLUS PRINT RPAREN SEMIC SQR TIMES TYPEstatements   : statements statement\n                    | statementstatement    : declaration\n                    | statement assignment\n                    | statement prtdeclaration  : TYPE IDENTIFIER SEMIC\n                    | TYPE IDENTIFIER EQUALS expression SEMICassignment   : IDENTIFIER EQUALS expression SEMICprt  : PRINT LPAREN expression RPAREN SEMICexpression   : expression PLUS termexpression   : expression MINUS termterm : term TIMES factorterm : term DIVIDE factorfactor : EXP LPAREN factor value RPARENfactor : SQR LPAREN factor RPARENvalue   : NUMBERexpression   : termterm : factorfactor : value'
+_lr_signature = 'DIRECTIVES DIVIDE EQUALS EXP IDENTIFIER LIBRARIES LPAREN MINUS NS NUMBER PLUS PRINT RPAREN SEMIC SQR TIMES TYPEstatements   : statements statement\n                    | statementstatement    : declaration\n                    | statement assignment\n                    | statement prt\n                    | directivesdirectives  : NS DIRECTIVES LIBRARIESdeclaration  : TYPE IDENTIFIER SEMIC\n                    | TYPE IDENTIFIER EQUALS expression SEMICassignment   : IDENTIFIER EQUALS expression SEMICprt  : PRINT LPAREN expression RPAREN SEMICexpression   : expression PLUS termexpression   : expression MINUS termterm : term TIMES factorterm : term DIVIDE factorfactor : EXP LPAREN factor value RPARENfactor : SQR LPAREN factor RPARENvalue   : NUMBERexpression   : termterm : factorfactor   : value\n                | IDENTIFIER\n                | LPAREN expression RPAREN'
     
-_lr_action_items = {'TYPE':([0,1,2,3,5,6,7,13,24,32,39,],[4,4,-2,-3,-1,-4,-5,-6,-8,-7,-9,]),'$end':([1,2,3,5,6,7,13,24,32,39,],[0,-2,-3,-1,-4,-5,-6,-8,-7,-9,]),'IDENTIFIER':([2,3,4,5,6,7,13,24,32,39,],[8,-3,10,8,-4,-5,-6,-8,-7,-9,]),'PRINT':([2,3,5,6,7,13,24,32,39,],[9,-3,9,-4,-5,-6,-8,-7,-9,]),'EQUALS':([8,10,],[11,14,]),'LPAREN':([9,18,20,],[12,29,30,]),'SEMIC':([10,15,16,17,19,21,23,31,33,34,35,36,41,42,],[13,24,-17,-18,-19,-16,32,39,-10,-11,-12,-13,-15,-14,]),'EXP':([11,12,14,25,26,27,28,29,30,],[18,18,18,18,18,18,18,18,18,]),'SQR':([11,12,14,25,26,27,28,29,30,],[20,20,20,20,20,20,20,20,20,]),'NUMBER':([11,12,14,19,21,25,26,27,28,29,30,37,41,42,],[21,21,21,-19,-16,21,21,21,21,21,21,21,-15,-14,]),'PLUS':([15,16,17,19,21,22,23,33,34,35,36,41,42,],[25,-17,-18,-19,-16,25,25,-10,-11,-12,-13,-15,-14,]),'MINUS':([15,16,17,19,21,22,23,33,34,35,36,41,42,],[26,-17,-18,-19,-16,26,26,-10,-11,-12,-13,-15,-14,]),'RPAREN':([16,17,19,21,22,33,34,35,36,38,40,41,42,],[-17,-18,-19,-16,31,-10,-11,-12,-13,41,42,-15,-14,]),'TIMES':([16,17,19,21,33,34,35,36,41,42,],[27,-18,-19,-16,27,27,-12,-13,-15,-14,]),'DIVIDE':([16,17,19,21,33,34,35,36,41,42,],[28,-18,-19,-16,28,28,-12,-13,-15,-14,]),}
+_lr_action_items = {'TYPE':([0,1,2,3,4,7,8,9,16,18,30,39,47,],[5,5,-2,-3,-6,-1,-4,-5,-8,-7,-10,-9,-11,]),'NS':([0,1,2,3,4,7,8,9,16,18,30,39,47,],[6,6,-2,-3,-6,-1,-4,-5,-8,-7,-10,-9,-11,]),'$end':([1,2,3,4,7,8,9,16,18,30,39,47,],[0,-2,-3,-6,-1,-4,-5,-8,-7,-10,-9,-11,]),'IDENTIFIER':([2,3,4,5,7,8,9,14,15,16,17,18,24,30,31,32,33,34,35,37,39,47,],[10,-3,-6,12,10,-4,-5,19,19,-8,19,-7,19,-10,19,19,19,19,19,19,-9,-11,]),'PRINT':([2,3,4,7,8,9,16,18,30,39,47,],[11,-3,-6,11,-4,-5,-8,-7,-10,-9,-11,]),'DIRECTIVES':([6,],[13,]),'EQUALS':([10,12,],[14,17,]),'LPAREN':([11,14,15,17,23,24,26,31,32,33,34,35,37,],[15,24,24,24,35,24,37,24,24,24,24,24,24,]),'SEMIC':([12,19,20,21,22,25,27,29,38,40,41,42,43,45,49,50,],[16,-22,30,-19,-20,-21,-18,39,47,-12,-13,-14,-15,-23,-17,-16,]),'LIBRARIES':([13,],[18,]),'EXP':([14,15,17,24,31,32,33,34,35,37,],[23,23,23,23,23,23,23,23,23,23,]),'SQR':([14,15,17,24,31,32,33,34,35,37,],[26,26,26,26,26,26,26,26,26,26,]),'NUMBER':([14,15,17,19,24,25,27,31,32,33,34,35,37,44,45,49,50,],[27,27,27,-22,27,-21,-18,27,27,27,27,27,27,27,-23,-17,-16,]),'TIMES':([19,21,22,25,27,40,41,42,43,45,49,50,],[-22,33,-20,-21,-18,33,33,-14,-15,-23,-17,-16,]),'DIVIDE':([19,21,22,25,27,40,41,42,43,45,49,50,],[-22,34,-20,-21,-18,34,34,-14,-15,-23,-17,-16,]),'PLUS':([19,20,21,22,25,27,28,29,36,40,41,42,43,45,49,50,],[-22,31,-19,-20,-21,-18,31,31,31,-12,-13,-14,-15,-23,-17,-16,]),'MINUS':([19,20,21,22,25,27,28,29,36,40,41,42,43,45,49,50,],[-22,32,-19,-20,-21,-18,32,32,32,-12,-13,-14,-15,-23,-17,-16,]),'RPAREN':([19,21,22,25,27,28,36,40,41,42,43,45,46,48,49,50,],[-22,-19,-20,-21,-18,38,45,-12,-13,-14,-15,-23,49,50,-17,-16,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statements':([0,],[1,]),'statement':([0,1,],[2,5,]),'declaration':([0,1,],[3,3,]),'assignment':([2,5,],[6,6,]),'prt':([2,5,],[7,7,]),'expression':([11,12,14,],[15,22,23,]),'term':([11,12,14,25,26,],[16,16,16,33,34,]),'factor':([11,12,14,25,26,27,28,29,30,],[17,17,17,17,17,35,36,37,38,]),'value':([11,12,14,25,26,27,28,29,30,37,],[19,19,19,19,19,19,19,19,19,40,]),}
+_lr_goto_items = {'statements':([0,],[1,]),'statement':([0,1,],[2,7,]),'declaration':([0,1,],[3,3,]),'directives':([0,1,],[4,4,]),'assignment':([2,7,],[8,8,]),'prt':([2,7,],[9,9,]),'expression':([14,15,17,24,],[20,28,29,36,]),'term':([14,15,17,24,31,32,],[21,21,21,21,40,41,]),'factor':([14,15,17,24,31,32,33,34,35,37,],[22,22,22,22,22,22,42,43,44,46,]),'value':([14,15,17,24,31,32,33,34,35,37,44,],[25,25,25,25,25,25,25,25,25,25,48,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -32,18 +32,22 @@ _lr_productions = [
   ('statement -> declaration','statement',1,'p_statement','Syntax.py',21),
   ('statement -> statement assignment','statement',2,'p_statement','Syntax.py',22),
   ('statement -> statement prt','statement',2,'p_statement','Syntax.py',23),
-  ('declaration -> TYPE IDENTIFIER SEMIC','declaration',3,'p_declaration','Syntax.py',28),
-  ('declaration -> TYPE IDENTIFIER EQUALS expression SEMIC','declaration',5,'p_declaration','Syntax.py',29),
-  ('assignment -> IDENTIFIER EQUALS expression SEMIC','assignment',4,'p_assignment','Syntax.py',43),
-  ('prt -> PRINT LPAREN expression RPAREN SEMIC','prt',5,'p_print','Syntax.py',53),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','Syntax.py',59),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','Syntax.py',64),
-  ('term -> term TIMES factor','term',3,'p_term_times','Syntax.py',69),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','Syntax.py',74),
-  ('factor -> EXP LPAREN factor value RPAREN','factor',5,'p_factor_exp','Syntax.py',79),
-  ('factor -> SQR LPAREN factor RPAREN','factor',4,'p_factor_sqr','Syntax.py',84),
-  ('value -> NUMBER','value',1,'p_values_num','Syntax.py',89),
-  ('expression -> term','expression',1,'p_expression_term','Syntax.py',94),
-  ('term -> factor','term',1,'p_term_factor','Syntax.py',99),
-  ('factor -> value','factor',1,'p_factor_value','Syntax.py',104),
+  ('statement -> directives','statement',1,'p_statement','Syntax.py',24),
+  ('directives -> NS DIRECTIVES LIBRARIES','directives',3,'p_directives','Syntax.py',29),
+  ('declaration -> TYPE IDENTIFIER SEMIC','declaration',3,'p_declaration','Syntax.py',33),
+  ('declaration -> TYPE IDENTIFIER EQUALS expression SEMIC','declaration',5,'p_declaration','Syntax.py',34),
+  ('assignment -> IDENTIFIER EQUALS expression SEMIC','assignment',4,'p_assignment','Syntax.py',48),
+  ('prt -> PRINT LPAREN expression RPAREN SEMIC','prt',5,'p_print','Syntax.py',58),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','Syntax.py',64),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','Syntax.py',69),
+  ('term -> term TIMES factor','term',3,'p_term_times','Syntax.py',74),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','Syntax.py',79),
+  ('factor -> EXP LPAREN factor value RPAREN','factor',5,'p_factor_exp','Syntax.py',84),
+  ('factor -> SQR LPAREN factor RPAREN','factor',4,'p_factor_sqr','Syntax.py',89),
+  ('value -> NUMBER','value',1,'p_values_num','Syntax.py',94),
+  ('expression -> term','expression',1,'p_expression_term','Syntax.py',99),
+  ('term -> factor','term',1,'p_term_factor','Syntax.py',104),
+  ('factor -> value','factor',1,'p_factor_value','Syntax.py',109),
+  ('factor -> IDENTIFIER','factor',1,'p_factor_value','Syntax.py',110),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_value','Syntax.py',111),
 ]

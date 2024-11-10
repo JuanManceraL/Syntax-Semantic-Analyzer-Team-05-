@@ -1,3 +1,4 @@
+# include stdio.h
 int a;
 int b;
 int c = 4+2;
@@ -6,3 +7,7 @@ printf(5+3*45*2);
 a = exp(3 2);
 a = sqr(sqr(16));
 c = exp (sqr(exp(5 2)) 2);
+int d;
+d = a;
+d = 3*(4+5);
+d = 3*4+5;

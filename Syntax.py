@@ -20,9 +20,14 @@ def p_program(p):
 def p_statement(p):
     """statement    : declaration
                     | statement assignment
-                    | statement prt"""
+                    | statement prt
+                    | directives"""  
     print(f"S <- S")
     #p[0] = p[1]
+
+def p_directives(p):
+    """directives  : NS DIRECTIVES LIBRARIES"""
+    print(f"Incluyendo {p[1]}{p[2]} {p[3]}")
 
 def p_declaration(p):
     """declaration  : TYPE IDENTIFIER SEMIC
@@ -101,17 +106,19 @@ def p_term_factor(p):
     print(f"T <- F {p[1]}")
 
 def p_factor_value(p):
-    "factor : value"
-    p[0] = p[1]
-    print(f"F <- V {p[1]}")
-
-#def p_expression_term(p):
-#    """expression : term"""
-#    p[0] = p[1]
-
-#def p_term_factor(p):
-#    """term : factor"""
-#    p[0] = p[1]
+    """factor   : value
+                | IDENTIFIER
+                | LPAREN expression RPAREN"""
+    if not str(p[1]).isnumeric:
+        var_name = p[1]
+        if not var_name in symbol_table:
+            print(f"Error: La variable '{var_name}' no existe declarada.")
+    elif p[1] == '(':
+        p[0] = p[2]
+        print(f"F <- V {p[2]}")
+    else:
+        p[0] = p[1]
+        print(f"F <- V {p[1]}")
 
 #Error rule for syntax errors
 def p_error(p):

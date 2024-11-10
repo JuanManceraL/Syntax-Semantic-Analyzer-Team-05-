@@ -12,6 +12,14 @@ types = {
     'int', 'bool', 'float'
 }
 
+libraries = {
+    'stdio.h', 'math'
+}
+
+directives = {
+    'include'
+}
+
 # List of token names.   This is always required
 tokens = (
     'NUMBER',
@@ -27,7 +35,10 @@ tokens = (
     'IDENTIFIER',
     'PRINT',
     'EXP',
-    'SQR'
+    'SQR',
+    'NS',
+    'LIBRARIES',
+    'DIRECTIVES'
 )
 
 # Regular expression rules for simple tokens
@@ -42,11 +53,16 @@ t_EQUALS    = r'='
 t_PRINT     = r'printf'
 t_EXP       = r'exp'
 t_SQR       = r'sqr'
+t_NS        = r'\#'
 
 t_TYPE      = r'\b(?:' + '|'.join(types) + r')\b'
 
-t_IDENTIFIER = r'(?!\b(?:' + '|'.join(keywords) + r')\b)[a-zA-Z_][a-zA-Z0-9_]*'
-#t_IDENTIFIER = r'(?!\b(?:' + '|'.join(keywords) + r')\b)[a-zA-Z_][a-zA-Z0-9_]*'
+#Aquí agregar todas las listas de palabras reservadas posibles
+resserverWords = keywords | libraries | directives
+
+t_IDENTIFIER = r'(?!\b(?:' + '|'.join(resserverWords) + r')\b)[a-zA-Z_][a-zA-Z0-9_]*'
+t_LIBRARIES = r'\b(?:' + '|'.join(libraries) + r')\b'
+t_DIRECTIVES = r'\b(?:' + '|'.join(directives) + r')\b'
 
 # A regular expression rule with some action code
 def t_NUMBER(t):
