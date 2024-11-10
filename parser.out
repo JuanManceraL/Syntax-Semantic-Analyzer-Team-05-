@@ -1,53 +1,57 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    DIVIDE
-    MINUS
-
 Grammar
 
 Rule 0     S' -> statements
 Rule 1     statements -> statements statement
 Rule 2     statements -> statement
 Rule 3     statement -> declaration
-Rule 4     statement -> assignment
-Rule 5     statement -> prt
+Rule 4     statement -> statement assignment
+Rule 5     statement -> statement prt
 Rule 6     declaration -> TYPE IDENTIFIER SEMIC
-Rule 7     assignment -> IDENTIFIER EQUALS expression SEMIC
-Rule 8     prt -> PRINT LPAREN expression RPAREN SEMIC
-Rule 9     expression -> expression PLUS term
-Rule 10    term -> term TIMES factor
-Rule 11    factor -> NUMBER
-Rule 12    expression -> term
-Rule 13    term -> factor
+Rule 7     declaration -> TYPE IDENTIFIER EQUALS expression SEMIC
+Rule 8     assignment -> IDENTIFIER EQUALS expression SEMIC
+Rule 9     prt -> PRINT LPAREN expression RPAREN SEMIC
+Rule 10    expression -> expression PLUS term
+Rule 11    expression -> expression MINUS term
+Rule 12    term -> term TIMES factor
+Rule 13    term -> term DIVIDE factor
+Rule 14    factor -> EXP LPAREN factor value RPAREN
+Rule 15    factor -> SQR LPAREN factor RPAREN
+Rule 16    value -> NUMBER
+Rule 17    expression -> term
+Rule 18    term -> factor
+Rule 19    factor -> value
 
 Terminals, with rules where they appear
 
-DIVIDE               : 
-EQUALS               : 7
-IDENTIFIER           : 6 7
-LPAREN               : 8
-MINUS                : 
-NUMBER               : 11
-PLUS                 : 9
-PRINT                : 8
-RPAREN               : 8
-SEMIC                : 6 7 8
-TIMES                : 10
-TYPE                 : 6
+DIVIDE               : 13
+EQUALS               : 7 8
+EXP                  : 14
+IDENTIFIER           : 6 7 8
+LPAREN               : 9 14 15
+MINUS                : 11
+NUMBER               : 16
+PLUS                 : 10
+PRINT                : 9
+RPAREN               : 9 14 15
+SEMIC                : 6 7 8 9
+SQR                  : 15
+TIMES                : 12
+TYPE                 : 6 7
 error                : 
 
 Nonterminals, with rules where they appear
 
 assignment           : 4
 declaration          : 3
-expression           : 7 8 9
-factor               : 10 13
+expression           : 7 8 9 10 11
+factor               : 12 13 14 15 18
 prt                  : 5
-statement            : 1 2
+statement            : 1 2 4 5
 statements           : 1 0
-term                 : 9 10 12
+term                 : 10 11 12 13 17
+value                : 14 19
 
 Parsing method: LALR
 
@@ -57,274 +61,535 @@ state 0
     (1) statements -> . statements statement
     (2) statements -> . statement
     (3) statement -> . declaration
-    (4) statement -> . assignment
-    (5) statement -> . prt
+    (4) statement -> . statement assignment
+    (5) statement -> . statement prt
     (6) declaration -> . TYPE IDENTIFIER SEMIC
-    (7) assignment -> . IDENTIFIER EQUALS expression SEMIC
-    (8) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (7) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
 
-    TYPE            shift and go to state 6
-    IDENTIFIER      shift and go to state 7
-    PRINT           shift and go to state 8
+    TYPE            shift and go to state 4
 
     statements                     shift and go to state 1
     statement                      shift and go to state 2
     declaration                    shift and go to state 3
-    assignment                     shift and go to state 4
-    prt                            shift and go to state 5
 
 state 1
 
     (0) S' -> statements .
     (1) statements -> statements . statement
     (3) statement -> . declaration
-    (4) statement -> . assignment
-    (5) statement -> . prt
+    (4) statement -> . statement assignment
+    (5) statement -> . statement prt
     (6) declaration -> . TYPE IDENTIFIER SEMIC
-    (7) assignment -> . IDENTIFIER EQUALS expression SEMIC
-    (8) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (7) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
 
-    TYPE            shift and go to state 6
-    IDENTIFIER      shift and go to state 7
-    PRINT           shift and go to state 8
+    TYPE            shift and go to state 4
 
-    statement                      shift and go to state 9
+    statement                      shift and go to state 5
     declaration                    shift and go to state 3
-    assignment                     shift and go to state 4
-    prt                            shift and go to state 5
 
 state 2
 
     (2) statements -> statement .
+    (4) statement -> statement . assignment
+    (5) statement -> statement . prt
+    (8) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (9) prt -> . PRINT LPAREN expression RPAREN SEMIC
 
     TYPE            reduce using rule 2 (statements -> statement .)
-    IDENTIFIER      reduce using rule 2 (statements -> statement .)
-    PRINT           reduce using rule 2 (statements -> statement .)
     $end            reduce using rule 2 (statements -> statement .)
+    IDENTIFIER      shift and go to state 8
+    PRINT           shift and go to state 9
 
+    assignment                     shift and go to state 6
+    prt                            shift and go to state 7
 
 state 3
 
     (3) statement -> declaration .
 
-    TYPE            reduce using rule 3 (statement -> declaration .)
     IDENTIFIER      reduce using rule 3 (statement -> declaration .)
     PRINT           reduce using rule 3 (statement -> declaration .)
+    TYPE            reduce using rule 3 (statement -> declaration .)
     $end            reduce using rule 3 (statement -> declaration .)
 
 
 state 4
 
-    (4) statement -> assignment .
-
-    TYPE            reduce using rule 4 (statement -> assignment .)
-    IDENTIFIER      reduce using rule 4 (statement -> assignment .)
-    PRINT           reduce using rule 4 (statement -> assignment .)
-    $end            reduce using rule 4 (statement -> assignment .)
-
-
-state 5
-
-    (5) statement -> prt .
-
-    TYPE            reduce using rule 5 (statement -> prt .)
-    IDENTIFIER      reduce using rule 5 (statement -> prt .)
-    PRINT           reduce using rule 5 (statement -> prt .)
-    $end            reduce using rule 5 (statement -> prt .)
-
-
-state 6
-
     (6) declaration -> TYPE . IDENTIFIER SEMIC
+    (7) declaration -> TYPE . IDENTIFIER EQUALS expression SEMIC
 
     IDENTIFIER      shift and go to state 10
 
 
+state 5
+
+    (1) statements -> statements statement .
+    (4) statement -> statement . assignment
+    (5) statement -> statement . prt
+    (8) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (9) prt -> . PRINT LPAREN expression RPAREN SEMIC
+
+    TYPE            reduce using rule 1 (statements -> statements statement .)
+    $end            reduce using rule 1 (statements -> statements statement .)
+    IDENTIFIER      shift and go to state 8
+    PRINT           shift and go to state 9
+
+    assignment                     shift and go to state 6
+    prt                            shift and go to state 7
+
+state 6
+
+    (4) statement -> statement assignment .
+
+    IDENTIFIER      reduce using rule 4 (statement -> statement assignment .)
+    PRINT           reduce using rule 4 (statement -> statement assignment .)
+    TYPE            reduce using rule 4 (statement -> statement assignment .)
+    $end            reduce using rule 4 (statement -> statement assignment .)
+
+
 state 7
 
-    (7) assignment -> IDENTIFIER . EQUALS expression SEMIC
+    (5) statement -> statement prt .
 
-    EQUALS          shift and go to state 11
+    IDENTIFIER      reduce using rule 5 (statement -> statement prt .)
+    PRINT           reduce using rule 5 (statement -> statement prt .)
+    TYPE            reduce using rule 5 (statement -> statement prt .)
+    $end            reduce using rule 5 (statement -> statement prt .)
 
 
 state 8
 
-    (8) prt -> PRINT . LPAREN expression RPAREN SEMIC
+    (8) assignment -> IDENTIFIER . EQUALS expression SEMIC
 
-    LPAREN          shift and go to state 12
+    EQUALS          shift and go to state 11
 
 
 state 9
 
-    (1) statements -> statements statement .
+    (9) prt -> PRINT . LPAREN expression RPAREN SEMIC
 
-    TYPE            reduce using rule 1 (statements -> statements statement .)
-    IDENTIFIER      reduce using rule 1 (statements -> statements statement .)
-    PRINT           reduce using rule 1 (statements -> statements statement .)
-    $end            reduce using rule 1 (statements -> statements statement .)
+    LPAREN          shift and go to state 12
 
 
 state 10
 
     (6) declaration -> TYPE IDENTIFIER . SEMIC
+    (7) declaration -> TYPE IDENTIFIER . EQUALS expression SEMIC
 
     SEMIC           shift and go to state 13
+    EQUALS          shift and go to state 14
 
 
 state 11
 
-    (7) assignment -> IDENTIFIER EQUALS . expression SEMIC
-    (9) expression -> . expression PLUS term
-    (12) expression -> . term
-    (10) term -> . term TIMES factor
-    (13) term -> . factor
-    (11) factor -> . NUMBER
+    (8) assignment -> IDENTIFIER EQUALS . expression SEMIC
+    (10) expression -> . expression PLUS term
+    (11) expression -> . expression MINUS term
+    (17) expression -> . term
+    (12) term -> . term TIMES factor
+    (13) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
 
-    NUMBER          shift and go to state 17
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
 
-    expression                     shift and go to state 14
-    term                           shift and go to state 15
-    factor                         shift and go to state 16
+    expression                     shift and go to state 15
+    term                           shift and go to state 16
+    factor                         shift and go to state 17
+    value                          shift and go to state 19
 
 state 12
 
-    (8) prt -> PRINT LPAREN . expression RPAREN SEMIC
-    (9) expression -> . expression PLUS term
-    (12) expression -> . term
-    (10) term -> . term TIMES factor
-    (13) term -> . factor
-    (11) factor -> . NUMBER
+    (9) prt -> PRINT LPAREN . expression RPAREN SEMIC
+    (10) expression -> . expression PLUS term
+    (11) expression -> . expression MINUS term
+    (17) expression -> . term
+    (12) term -> . term TIMES factor
+    (13) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
 
-    NUMBER          shift and go to state 17
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
 
-    expression                     shift and go to state 18
-    term                           shift and go to state 15
-    factor                         shift and go to state 16
+    expression                     shift and go to state 22
+    term                           shift and go to state 16
+    factor                         shift and go to state 17
+    value                          shift and go to state 19
 
 state 13
 
     (6) declaration -> TYPE IDENTIFIER SEMIC .
 
-    TYPE            reduce using rule 6 (declaration -> TYPE IDENTIFIER SEMIC .)
     IDENTIFIER      reduce using rule 6 (declaration -> TYPE IDENTIFIER SEMIC .)
     PRINT           reduce using rule 6 (declaration -> TYPE IDENTIFIER SEMIC .)
+    TYPE            reduce using rule 6 (declaration -> TYPE IDENTIFIER SEMIC .)
     $end            reduce using rule 6 (declaration -> TYPE IDENTIFIER SEMIC .)
 
 
 state 14
 
-    (7) assignment -> IDENTIFIER EQUALS expression . SEMIC
-    (9) expression -> expression . PLUS term
+    (7) declaration -> TYPE IDENTIFIER EQUALS . expression SEMIC
+    (10) expression -> . expression PLUS term
+    (11) expression -> . expression MINUS term
+    (17) expression -> . term
+    (12) term -> . term TIMES factor
+    (13) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
 
-    SEMIC           shift and go to state 19
-    PLUS            shift and go to state 20
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
 
+    expression                     shift and go to state 23
+    term                           shift and go to state 16
+    factor                         shift and go to state 17
+    value                          shift and go to state 19
 
 state 15
 
-    (12) expression -> term .
-    (10) term -> term . TIMES factor
+    (8) assignment -> IDENTIFIER EQUALS expression . SEMIC
+    (10) expression -> expression . PLUS term
+    (11) expression -> expression . MINUS term
 
-    SEMIC           reduce using rule 12 (expression -> term .)
-    PLUS            reduce using rule 12 (expression -> term .)
-    RPAREN          reduce using rule 12 (expression -> term .)
-    TIMES           shift and go to state 21
+    SEMIC           shift and go to state 24
+    PLUS            shift and go to state 25
+    MINUS           shift and go to state 26
 
 
 state 16
 
-    (13) term -> factor .
+    (17) expression -> term .
+    (12) term -> term . TIMES factor
+    (13) term -> term . DIVIDE factor
 
-    TIMES           reduce using rule 13 (term -> factor .)
-    SEMIC           reduce using rule 13 (term -> factor .)
-    PLUS            reduce using rule 13 (term -> factor .)
-    RPAREN          reduce using rule 13 (term -> factor .)
+    SEMIC           reduce using rule 17 (expression -> term .)
+    PLUS            reduce using rule 17 (expression -> term .)
+    MINUS           reduce using rule 17 (expression -> term .)
+    RPAREN          reduce using rule 17 (expression -> term .)
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
 
 
 state 17
 
-    (11) factor -> NUMBER .
+    (18) term -> factor .
 
-    TIMES           reduce using rule 11 (factor -> NUMBER .)
-    SEMIC           reduce using rule 11 (factor -> NUMBER .)
-    PLUS            reduce using rule 11 (factor -> NUMBER .)
-    RPAREN          reduce using rule 11 (factor -> NUMBER .)
+    TIMES           reduce using rule 18 (term -> factor .)
+    DIVIDE          reduce using rule 18 (term -> factor .)
+    SEMIC           reduce using rule 18 (term -> factor .)
+    PLUS            reduce using rule 18 (term -> factor .)
+    MINUS           reduce using rule 18 (term -> factor .)
+    RPAREN          reduce using rule 18 (term -> factor .)
 
 
 state 18
 
-    (8) prt -> PRINT LPAREN expression . RPAREN SEMIC
-    (9) expression -> expression . PLUS term
+    (14) factor -> EXP . LPAREN factor value RPAREN
 
-    RPAREN          shift and go to state 22
-    PLUS            shift and go to state 20
+    LPAREN          shift and go to state 29
 
 
 state 19
 
-    (7) assignment -> IDENTIFIER EQUALS expression SEMIC .
+    (19) factor -> value .
 
-    TYPE            reduce using rule 7 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    IDENTIFIER      reduce using rule 7 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    PRINT           reduce using rule 7 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    $end            reduce using rule 7 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    TIMES           reduce using rule 19 (factor -> value .)
+    DIVIDE          reduce using rule 19 (factor -> value .)
+    SEMIC           reduce using rule 19 (factor -> value .)
+    PLUS            reduce using rule 19 (factor -> value .)
+    MINUS           reduce using rule 19 (factor -> value .)
+    RPAREN          reduce using rule 19 (factor -> value .)
+    NUMBER          reduce using rule 19 (factor -> value .)
 
 
 state 20
 
-    (9) expression -> expression PLUS . term
-    (10) term -> . term TIMES factor
-    (13) term -> . factor
-    (11) factor -> . NUMBER
+    (15) factor -> SQR . LPAREN factor RPAREN
 
-    NUMBER          shift and go to state 17
+    LPAREN          shift and go to state 30
 
-    term                           shift and go to state 23
-    factor                         shift and go to state 16
 
 state 21
 
-    (10) term -> term TIMES . factor
-    (11) factor -> . NUMBER
+    (16) value -> NUMBER .
 
-    NUMBER          shift and go to state 17
+    TIMES           reduce using rule 16 (value -> NUMBER .)
+    DIVIDE          reduce using rule 16 (value -> NUMBER .)
+    SEMIC           reduce using rule 16 (value -> NUMBER .)
+    PLUS            reduce using rule 16 (value -> NUMBER .)
+    MINUS           reduce using rule 16 (value -> NUMBER .)
+    RPAREN          reduce using rule 16 (value -> NUMBER .)
+    NUMBER          reduce using rule 16 (value -> NUMBER .)
 
-    factor                         shift and go to state 24
 
 state 22
 
-    (8) prt -> PRINT LPAREN expression RPAREN . SEMIC
+    (9) prt -> PRINT LPAREN expression . RPAREN SEMIC
+    (10) expression -> expression . PLUS term
+    (11) expression -> expression . MINUS term
 
-    SEMIC           shift and go to state 25
+    RPAREN          shift and go to state 31
+    PLUS            shift and go to state 25
+    MINUS           shift and go to state 26
 
 
 state 23
 
-    (9) expression -> expression PLUS term .
-    (10) term -> term . TIMES factor
+    (7) declaration -> TYPE IDENTIFIER EQUALS expression . SEMIC
+    (10) expression -> expression . PLUS term
+    (11) expression -> expression . MINUS term
 
-    SEMIC           reduce using rule 9 (expression -> expression PLUS term .)
-    PLUS            reduce using rule 9 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 9 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 21
+    SEMIC           shift and go to state 32
+    PLUS            shift and go to state 25
+    MINUS           shift and go to state 26
 
 
 state 24
 
-    (10) term -> term TIMES factor .
+    (8) assignment -> IDENTIFIER EQUALS expression SEMIC .
 
-    TIMES           reduce using rule 10 (term -> term TIMES factor .)
-    SEMIC           reduce using rule 10 (term -> term TIMES factor .)
-    PLUS            reduce using rule 10 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 10 (term -> term TIMES factor .)
+    IDENTIFIER      reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    PRINT           reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    TYPE            reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    $end            reduce using rule 8 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
 
 
 state 25
 
-    (8) prt -> PRINT LPAREN expression RPAREN SEMIC .
+    (10) expression -> expression PLUS . term
+    (12) term -> . term TIMES factor
+    (13) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
 
-    TYPE            reduce using rule 8 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    IDENTIFIER      reduce using rule 8 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    PRINT           reduce using rule 8 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    $end            reduce using rule 8 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
+
+    term                           shift and go to state 33
+    factor                         shift and go to state 17
+    value                          shift and go to state 19
+
+state 26
+
+    (11) expression -> expression MINUS . term
+    (12) term -> . term TIMES factor
+    (13) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
+
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
+
+    term                           shift and go to state 34
+    factor                         shift and go to state 17
+    value                          shift and go to state 19
+
+state 27
+
+    (12) term -> term TIMES . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
+
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
+
+    factor                         shift and go to state 35
+    value                          shift and go to state 19
+
+state 28
+
+    (13) term -> term DIVIDE . factor
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
+
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
+
+    factor                         shift and go to state 36
+    value                          shift and go to state 19
+
+state 29
+
+    (14) factor -> EXP LPAREN . factor value RPAREN
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
+
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
+
+    factor                         shift and go to state 37
+    value                          shift and go to state 19
+
+state 30
+
+    (15) factor -> SQR LPAREN . factor RPAREN
+    (14) factor -> . EXP LPAREN factor value RPAREN
+    (15) factor -> . SQR LPAREN factor RPAREN
+    (19) factor -> . value
+    (16) value -> . NUMBER
+
+    EXP             shift and go to state 18
+    SQR             shift and go to state 20
+    NUMBER          shift and go to state 21
+
+    factor                         shift and go to state 38
+    value                          shift and go to state 19
+
+state 31
+
+    (9) prt -> PRINT LPAREN expression RPAREN . SEMIC
+
+    SEMIC           shift and go to state 39
+
+
+state 32
+
+    (7) declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .
+
+    IDENTIFIER      reduce using rule 7 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    PRINT           reduce using rule 7 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    TYPE            reduce using rule 7 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    $end            reduce using rule 7 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+
+
+state 33
+
+    (10) expression -> expression PLUS term .
+    (12) term -> term . TIMES factor
+    (13) term -> term . DIVIDE factor
+
+    SEMIC           reduce using rule 10 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 10 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 10 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 10 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
+
+
+state 34
+
+    (11) expression -> expression MINUS term .
+    (12) term -> term . TIMES factor
+    (13) term -> term . DIVIDE factor
+
+    SEMIC           reduce using rule 11 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 11 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 11 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 11 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
+
+
+state 35
+
+    (12) term -> term TIMES factor .
+
+    TIMES           reduce using rule 12 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 12 (term -> term TIMES factor .)
+    SEMIC           reduce using rule 12 (term -> term TIMES factor .)
+    PLUS            reduce using rule 12 (term -> term TIMES factor .)
+    MINUS           reduce using rule 12 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 12 (term -> term TIMES factor .)
+
+
+state 36
+
+    (13) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 13 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 13 (term -> term DIVIDE factor .)
+    SEMIC           reduce using rule 13 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 13 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 13 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 13 (term -> term DIVIDE factor .)
+
+
+state 37
+
+    (14) factor -> EXP LPAREN factor . value RPAREN
+    (16) value -> . NUMBER
+
+    NUMBER          shift and go to state 21
+
+    value                          shift and go to state 40
+
+state 38
+
+    (15) factor -> SQR LPAREN factor . RPAREN
+
+    RPAREN          shift and go to state 41
+
+
+state 39
+
+    (9) prt -> PRINT LPAREN expression RPAREN SEMIC .
+
+    IDENTIFIER      reduce using rule 9 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    PRINT           reduce using rule 9 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    TYPE            reduce using rule 9 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    $end            reduce using rule 9 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+
+
+state 40
+
+    (14) factor -> EXP LPAREN factor value . RPAREN
+
+    RPAREN          shift and go to state 42
+
+
+state 41
+
+    (15) factor -> SQR LPAREN factor RPAREN .
+
+    TIMES           reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+    DIVIDE          reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+    SEMIC           reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+    PLUS            reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+    MINUS           reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+    RPAREN          reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+    NUMBER          reduce using rule 15 (factor -> SQR LPAREN factor RPAREN .)
+
+
+state 42
+
+    (14) factor -> EXP LPAREN factor value RPAREN .
+
+    TIMES           reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
+    DIVIDE          reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
+    SEMIC           reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
+    PLUS            reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
+    MINUS           reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
+    RPAREN          reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
+    NUMBER          reduce using rule 14 (factor -> EXP LPAREN factor value RPAREN .)
 

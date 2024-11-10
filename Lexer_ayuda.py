@@ -5,7 +5,7 @@ def leer_archivo(ruta_archivo):
         return archivo.read()
 
 keywords = {
-    'char', 'else', 'float', 'if', 'int', 'union', 'unsigned', 'void', 'volatile', 'while', 'printf', 'scanf'
+    'char', 'else', 'float', 'if', 'int', 'union', 'unsigned', 'void', 'volatile', 'while', 'printf', 'scanf', 'exp', 'sqr'
 }
 
 types = {
@@ -25,7 +25,9 @@ tokens = (
     'TYPE',
     'EQUALS',
     'IDENTIFIER',
-    'PRINT'
+    'PRINT',
+    'EXP',
+    'SQR'
 )
 
 # Regular expression rules for simple tokens
@@ -38,6 +40,8 @@ t_RPAREN    = r'\)'
 t_SEMIC     = r';'
 t_EQUALS    = r'='
 t_PRINT     = r'printf'
+t_EXP       = r'exp'
+t_SQR       = r'sqr'
 
 t_TYPE      = r'\b(?:' + '|'.join(types) + r')\b'
 

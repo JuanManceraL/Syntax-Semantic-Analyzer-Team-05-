@@ -1,4 +1,5 @@
 import ply.yacc as yacc
+import math
 from Lexer_ayuda import tokens
 
 def leer_archivo(ruta_archivo):
@@ -13,22 +14,30 @@ def p_program(p):
     print(f"P <- S")
     #print(p[1])
 
+#def p_declaration(p):
+#    """declaration"""
+
 def p_statement(p):
     """statement    : declaration
-                    | assignment
-                    | prt"""
+                    | statement assignment
+                    | statement prt"""
     print(f"S <- S")
     #p[0] = p[1]
 
 def p_declaration(p):
-    """declaration  : TYPE IDENTIFIER SEMIC"""
+    """declaration  : TYPE IDENTIFIER SEMIC
+                    | TYPE IDENTIFIER EQUALS expression SEMIC"""
     var_name = p[2]
     if var_name in symbol_table:
         print(f"Error: La variable '{var_name}' ya fue declarada.")
     else:
         symbol_table[var_name] = None
-        print(f"Declaración: {var_name}")
-    print(f"D(S) <- {p[1]} {p[2]}{p[3]}")
+        if p[3] == '=':
+            print(f"Declaración y asignación: {var_name}")
+            print(f"D(S) <- {p[1]} {p[2]}{p[3]}{p[4]}{p[5]}")
+        else:
+            print(f"Declaración: {var_name}")
+            print(f"D(S) <- {p[1]} {p[2]}{p[3]}")
 
 def p_assignment(p):
     """assignment   : IDENTIFIER EQUALS expression SEMIC"""
@@ -51,16 +60,35 @@ def p_expression_plus(p):
     p[0] = p[1] + p[3]
     print(f"E <- {p[1]}{p[2]}{p[3]}")
 
+def p_expression_minus(p):
+    """expression   : expression MINUS term"""
+    p[0] = p[1] - p[3]
+    print(f"E <- {p[1]}{p[2]}{p[3]}")
+
 def p_term_times(p):
-    """term     : term TIMES factor"""
+    """term : term TIMES factor"""
     p[0] = p[1] * p[3]
     print(f"T <- {p[1]} * {p[3]}")
 
+def p_term_div(p):
+    """term : term DIVIDE factor"""
+    p[0] = p[1] / p[3]
+    print(f"T <- {p[1]} / {p[3]}")
 
-def p_factor_num(p):
-    """factor   : NUMBER"""
+def p_factor_exp(p):
+    """factor : EXP LPAREN factor value RPAREN"""
+    print(f"Exponiendo {p[3]} a la {p[4]} = {p[3]**p[4]}")
+    p[0] = p[3]**p[4]
+
+def p_factor_sqr(p):
+    """factor : SQR LPAREN factor RPAREN"""
+    print(f"Raizcuadreando a {p[3]} = {math.sqrt(p[3])}")
+    p[0] = math.sqrt(p[3])
+
+def p_values_num(p):
+    """value   : NUMBER"""
     p[0] = p[1]
-    print(f"F <- N {p[1]}")
+    print(f"V <- N {p[1]}")
 
 def p_expression_term(p):
     """expression   : term""" #expression
@@ -71,6 +99,11 @@ def p_term_factor(p):
     "term : factor"
     p[0] = p[1]
     print(f"T <- F {p[1]}")
+
+def p_factor_value(p):
+    "factor : value"
+    p[0] = p[1]
+    print(f"F <- V {p[1]}")
 
 #def p_expression_term(p):
 #    """expression : term"""
