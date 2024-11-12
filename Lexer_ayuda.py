@@ -13,11 +13,15 @@ types = {
 }
 
 libraries = {
-    'stdio.h', 'math'
+    'stdio.h', 'math.h'
 }
 
 directives = {
     'include'
+}
+
+val_bool = {
+    'True', 'False'
 }
 
 # List of token names.   This is always required
@@ -29,6 +33,8 @@ tokens = (
     'DIVIDE',
     'LPAREN',
     'RPAREN',
+    'OCURLB',
+    'CCURLB',
     'SEMIC', 
     'TYPE',
     'EQUALS',
@@ -38,7 +44,11 @@ tokens = (
     'SQR',
     'NS',
     'LIBRARIES',
-    'DIRECTIVES'
+    'DIRECTIVES',
+    'IF',
+    'ELSE',
+    'VAL_BOOL',
+    'OP_BOOL'
 )
 
 # Regular expression rules for simple tokens
@@ -48,21 +58,27 @@ t_TIMES     = r'\*'
 t_DIVIDE    = r'/'
 t_LPAREN    = r'\('
 t_RPAREN    = r'\)'
+t_OCURLB    = r'\{'
+t_CCURLB    = r'\}'
 t_SEMIC     = r';'
 t_EQUALS    = r'='
+t_NS        = r'\#'
 t_PRINT     = r'printf'
 t_EXP       = r'exp'
 t_SQR       = r'sqr'
-t_NS        = r'\#'
+t_IF        = r'if'
+t_ELSE      = r'else'
 
 t_TYPE      = r'\b(?:' + '|'.join(types) + r')\b'
 
 #Aquí agregar todas las listas de palabras reservadas posibles
-resserverWords = keywords | libraries | directives
+resserverWords = keywords | libraries | directives | types | val_bool
 
 t_IDENTIFIER = r'(?!\b(?:' + '|'.join(resserverWords) + r')\b)[a-zA-Z_][a-zA-Z0-9_]*'
 t_LIBRARIES = r'\b(?:' + '|'.join(libraries) + r')\b'
 t_DIRECTIVES = r'\b(?:' + '|'.join(directives) + r')\b'
+t_VAL_BOOL = r'\b(?:' + '|'.join(val_bool) + r')\b'
+t_OP_BOOL = r'(<=|>=|==|<|>)'
 
 # A regular expression rule with some action code
 def t_NUMBER(t):

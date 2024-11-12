@@ -1,13 +1,13 @@
-# include stdio.h
-int a;
-int b;
-int c = 4+2;
-a = 3 + 3;
-printf(5+3*45*2);
-a = exp(3 2);
-a = sqr(sqr(16));
-c = exp (sqr(exp(5 2)) 2);
 int d;
-d = a;
-d = 3*(4+5);
-d = 3*4+5;
+d = 3+5;
+bool elbuleano = False;
+bool elbuleano1 = ( True );
+bool elbuleano2 = ( 2<5 - 3 );
+
+int decision = 0;
+int x;
+int a = 4;
+int b = 12;
+int c = 9;
+
+printf(x);

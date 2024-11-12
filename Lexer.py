@@ -145,7 +145,7 @@ def main():
 #    else:
 #        print("Opción no válida.")
 ##        return
-    ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
+    ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/Syntax-Semantic-Analyzer-Team-05-/ejemplo.c'
     if not os.path.isfile(ruta_archivo):
         print("El archivo especificado no existe.")
         return

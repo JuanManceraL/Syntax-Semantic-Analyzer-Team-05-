@@ -10,7 +10,8 @@ symbol_table = {}
 
 def p_program(p):
     """statements   : statements statement
-                    | statement"""
+                    | statement
+                    | """
     print(f"P <- S")
     #print(p[1])
 
@@ -19,9 +20,10 @@ def p_program(p):
 
 def p_statement(p):
     """statement    : declaration
-                    | statement assignment
-                    | statement prt
-                    | directives"""  
+                    | assignment
+                    | prt
+                    | directives
+                    | ifst""" 
     print(f"S <- S")
     #p[0] = p[1]
 
@@ -31,7 +33,8 @@ def p_directives(p):
 
 def p_declaration(p):
     """declaration  : TYPE IDENTIFIER SEMIC
-                    | TYPE IDENTIFIER EQUALS expression SEMIC"""
+                    | TYPE IDENTIFIER EQUALS expression SEMIC
+                    | TYPE IDENTIFIER EQUALS valbool SEMIC """
     var_name = p[2]
     if var_name in symbol_table:
         print(f"Error: La variable '{var_name}' ya fue declarada.")
@@ -58,6 +61,11 @@ def p_print(p):
     """prt  : PRINT LPAREN expression RPAREN SEMIC"""
     print(f"P(S) <- Imprimiendo... Printf({p[3]})")
     p[0] = p[1]
+
+def p_if(p):
+    """ifst : IF LPAREN valbool RPAREN OCURLB statements CCURLB
+            | IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB"""
+    print("Hubo un if :)")
 
 #Syntax for summ
 def p_expression_plus(p):
@@ -95,6 +103,27 @@ def p_values_num(p):
     p[0] = p[1]
     print(f"V <- N {p[1]}")
 
+def p_value_bool(p):
+    """ valbool     : VAL_BOOL
+                    | LPAREN valbool RPAREN
+                    | expression OP_BOOL expression""" #| expression OP_BOOL expression"""
+    if (p[1] == 'True' or p[1] == 'False'):
+        Val = p[1]
+    elif p[2] == '<':
+        Val = p[1] < p[3]
+    elif p[2] == '>':
+        Val = p[1] > p[3] 
+    elif (p[2] == '<='):
+        Val = p[1] <= p[3] 
+    elif (p[2] == '>='):
+        Val = p[1] >= p[3] 
+    elif (p[2] == '=='):
+        Val = p[1] == p[3] 
+    else:
+        Val = p[2]
+    p[0] = Val
+    print(f"V <- B {Val}")
+
 def p_expression_term(p):
     """expression   : term""" #expression
     p[0] = p[1]
@@ -108,13 +137,17 @@ def p_term_factor(p):
 def p_factor_value(p):
     """factor   : value
                 | IDENTIFIER
-                | LPAREN expression RPAREN"""
+                | LPAREN expression RPAREN
+                | MINUS factor"""
     if not str(p[1]).isnumeric:
         var_name = p[1]
         if not var_name in symbol_table:
             print(f"Error: La variable '{var_name}' no existe declarada.")
     elif p[1] == '(':
         p[0] = p[2]
+        print(f"F <- V {p[2]}")
+    elif p[1] == '-':
+        p[0] = (-1)*p[2]
         print(f"F <- V {p[2]}")
     else:
         p[0] = p[1]

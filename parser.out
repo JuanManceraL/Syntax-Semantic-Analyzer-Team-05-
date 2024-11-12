@@ -5,61 +5,78 @@ Grammar
 Rule 0     S' -> statements
 Rule 1     statements -> statements statement
 Rule 2     statements -> statement
-Rule 3     statement -> declaration
-Rule 4     statement -> statement assignment
-Rule 5     statement -> statement prt
-Rule 6     statement -> directives
-Rule 7     directives -> NS DIRECTIVES LIBRARIES
-Rule 8     declaration -> TYPE IDENTIFIER SEMIC
-Rule 9     declaration -> TYPE IDENTIFIER EQUALS expression SEMIC
-Rule 10    assignment -> IDENTIFIER EQUALS expression SEMIC
-Rule 11    prt -> PRINT LPAREN expression RPAREN SEMIC
-Rule 12    expression -> expression PLUS term
-Rule 13    expression -> expression MINUS term
-Rule 14    term -> term TIMES factor
-Rule 15    term -> term DIVIDE factor
-Rule 16    factor -> EXP LPAREN factor value RPAREN
-Rule 17    factor -> SQR LPAREN factor RPAREN
-Rule 18    value -> NUMBER
-Rule 19    expression -> term
-Rule 20    term -> factor
-Rule 21    factor -> value
-Rule 22    factor -> IDENTIFIER
-Rule 23    factor -> LPAREN expression RPAREN
+Rule 3     statements -> <empty>
+Rule 4     statement -> declaration
+Rule 5     statement -> assignment
+Rule 6     statement -> prt
+Rule 7     statement -> directives
+Rule 8     statement -> ifst
+Rule 9     directives -> NS DIRECTIVES LIBRARIES
+Rule 10    declaration -> TYPE IDENTIFIER SEMIC
+Rule 11    declaration -> TYPE IDENTIFIER EQUALS expression SEMIC
+Rule 12    declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC
+Rule 13    assignment -> IDENTIFIER EQUALS expression SEMIC
+Rule 14    prt -> PRINT LPAREN expression RPAREN SEMIC
+Rule 15    ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB
+Rule 16    ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+Rule 17    expression -> expression PLUS term
+Rule 18    expression -> expression MINUS term
+Rule 19    term -> term TIMES factor
+Rule 20    term -> term DIVIDE factor
+Rule 21    factor -> EXP LPAREN factor value RPAREN
+Rule 22    factor -> SQR LPAREN factor RPAREN
+Rule 23    value -> NUMBER
+Rule 24    valbool -> VAL_BOOL
+Rule 25    valbool -> LPAREN valbool RPAREN
+Rule 26    valbool -> expression OP_BOOL expression
+Rule 27    expression -> term
+Rule 28    term -> factor
+Rule 29    factor -> value
+Rule 30    factor -> IDENTIFIER
+Rule 31    factor -> LPAREN expression RPAREN
+Rule 32    factor -> MINUS factor
 
 Terminals, with rules where they appear
 
-DIRECTIVES           : 7
-DIVIDE               : 15
-EQUALS               : 9 10
-EXP                  : 16
-IDENTIFIER           : 8 9 10 22
-LIBRARIES            : 7
-LPAREN               : 11 16 17 23
-MINUS                : 13
-NS                   : 7
-NUMBER               : 18
-PLUS                 : 12
-PRINT                : 11
-RPAREN               : 11 16 17 23
-SEMIC                : 8 9 10 11
-SQR                  : 17
-TIMES                : 14
-TYPE                 : 8 9
+CCURLB               : 15 16 16
+DIRECTIVES           : 9
+DIVIDE               : 20
+ELSE                 : 16
+EQUALS               : 11 12 13
+EXP                  : 21
+IDENTIFIER           : 10 11 12 13 30
+IF                   : 15 16
+LIBRARIES            : 9
+LPAREN               : 14 15 16 21 22 25 31
+MINUS                : 18 32
+NS                   : 9
+NUMBER               : 23
+OCURLB               : 15 16 16
+OP_BOOL              : 26
+PLUS                 : 17
+PRINT                : 14
+RPAREN               : 14 15 16 21 22 25 31
+SEMIC                : 10 11 12 13 14
+SQR                  : 22
+TIMES                : 19
+TYPE                 : 10 11 12
+VAL_BOOL             : 24
 error                : 
 
 Nonterminals, with rules where they appear
 
-assignment           : 4
-declaration          : 3
-directives           : 6
-expression           : 9 10 11 12 13 23
-factor               : 14 15 16 17 20
-prt                  : 5
-statement            : 1 2 4 5
-statements           : 1 0
-term                 : 12 13 14 15 19
-value                : 16 21
+assignment           : 5
+declaration          : 4
+directives           : 7
+expression           : 11 13 14 17 18 26 26 31
+factor               : 19 20 21 22 28 32
+ifst                 : 8
+prt                  : 6
+statement            : 1 2
+statements           : 1 15 16 16 0
+term                 : 17 18 19 20 27
+valbool              : 12 15 16 25
+value                : 21 29
 
 Parsing method: LALR
 
@@ -68,689 +85,1239 @@ state 0
     (0) S' -> . statements
     (1) statements -> . statements statement
     (2) statements -> . statement
-    (3) statement -> . declaration
-    (4) statement -> . statement assignment
-    (5) statement -> . statement prt
-    (6) statement -> . directives
-    (8) declaration -> . TYPE IDENTIFIER SEMIC
-    (9) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
-    (7) directives -> . NS DIRECTIVES LIBRARIES
+    (3) statements -> .
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . prt
+    (7) statement -> . directives
+    (8) statement -> . ifst
+    (10) declaration -> . TYPE IDENTIFIER SEMIC
+    (11) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> . TYPE IDENTIFIER EQUALS valbool SEMIC
+    (13) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (14) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (9) directives -> . NS DIRECTIVES LIBRARIES
+    (15) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
 
-    TYPE            shift and go to state 5
-    NS              shift and go to state 6
+  ! shift/reduce conflict for TYPE resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for NS resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+    $end            reduce using rule 3 (statements -> .)
+    TYPE            shift and go to state 8
+    IDENTIFIER      shift and go to state 9
+    PRINT           shift and go to state 10
+    NS              shift and go to state 11
+    IF              shift and go to state 12
+
+  ! TYPE            [ reduce using rule 3 (statements -> .) ]
+  ! IDENTIFIER      [ reduce using rule 3 (statements -> .) ]
+  ! PRINT           [ reduce using rule 3 (statements -> .) ]
+  ! NS              [ reduce using rule 3 (statements -> .) ]
+  ! IF              [ reduce using rule 3 (statements -> .) ]
 
     statements                     shift and go to state 1
     statement                      shift and go to state 2
     declaration                    shift and go to state 3
-    directives                     shift and go to state 4
+    assignment                     shift and go to state 4
+    prt                            shift and go to state 5
+    directives                     shift and go to state 6
+    ifst                           shift and go to state 7
 
 state 1
 
     (0) S' -> statements .
     (1) statements -> statements . statement
-    (3) statement -> . declaration
-    (4) statement -> . statement assignment
-    (5) statement -> . statement prt
-    (6) statement -> . directives
-    (8) declaration -> . TYPE IDENTIFIER SEMIC
-    (9) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
-    (7) directives -> . NS DIRECTIVES LIBRARIES
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . prt
+    (7) statement -> . directives
+    (8) statement -> . ifst
+    (10) declaration -> . TYPE IDENTIFIER SEMIC
+    (11) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> . TYPE IDENTIFIER EQUALS valbool SEMIC
+    (13) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (14) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (9) directives -> . NS DIRECTIVES LIBRARIES
+    (15) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
 
-    TYPE            shift and go to state 5
-    NS              shift and go to state 6
+    TYPE            shift and go to state 8
+    IDENTIFIER      shift and go to state 9
+    PRINT           shift and go to state 10
+    NS              shift and go to state 11
+    IF              shift and go to state 12
 
-    statement                      shift and go to state 7
+    statement                      shift and go to state 13
     declaration                    shift and go to state 3
-    directives                     shift and go to state 4
+    assignment                     shift and go to state 4
+    prt                            shift and go to state 5
+    directives                     shift and go to state 6
+    ifst                           shift and go to state 7
 
 state 2
 
     (2) statements -> statement .
-    (4) statement -> statement . assignment
-    (5) statement -> statement . prt
-    (10) assignment -> . IDENTIFIER EQUALS expression SEMIC
-    (11) prt -> . PRINT LPAREN expression RPAREN SEMIC
 
     TYPE            reduce using rule 2 (statements -> statement .)
+    IDENTIFIER      reduce using rule 2 (statements -> statement .)
+    PRINT           reduce using rule 2 (statements -> statement .)
     NS              reduce using rule 2 (statements -> statement .)
+    IF              reduce using rule 2 (statements -> statement .)
     $end            reduce using rule 2 (statements -> statement .)
-    IDENTIFIER      shift and go to state 10
-    PRINT           shift and go to state 11
+    CCURLB          reduce using rule 2 (statements -> statement .)
 
-    assignment                     shift and go to state 8
-    prt                            shift and go to state 9
 
 state 3
 
-    (3) statement -> declaration .
+    (4) statement -> declaration .
 
-    IDENTIFIER      reduce using rule 3 (statement -> declaration .)
-    PRINT           reduce using rule 3 (statement -> declaration .)
-    TYPE            reduce using rule 3 (statement -> declaration .)
-    NS              reduce using rule 3 (statement -> declaration .)
-    $end            reduce using rule 3 (statement -> declaration .)
+    TYPE            reduce using rule 4 (statement -> declaration .)
+    IDENTIFIER      reduce using rule 4 (statement -> declaration .)
+    PRINT           reduce using rule 4 (statement -> declaration .)
+    NS              reduce using rule 4 (statement -> declaration .)
+    IF              reduce using rule 4 (statement -> declaration .)
+    $end            reduce using rule 4 (statement -> declaration .)
+    CCURLB          reduce using rule 4 (statement -> declaration .)
 
 
 state 4
 
-    (6) statement -> directives .
+    (5) statement -> assignment .
 
-    IDENTIFIER      reduce using rule 6 (statement -> directives .)
-    PRINT           reduce using rule 6 (statement -> directives .)
-    TYPE            reduce using rule 6 (statement -> directives .)
-    NS              reduce using rule 6 (statement -> directives .)
-    $end            reduce using rule 6 (statement -> directives .)
+    TYPE            reduce using rule 5 (statement -> assignment .)
+    IDENTIFIER      reduce using rule 5 (statement -> assignment .)
+    PRINT           reduce using rule 5 (statement -> assignment .)
+    NS              reduce using rule 5 (statement -> assignment .)
+    IF              reduce using rule 5 (statement -> assignment .)
+    $end            reduce using rule 5 (statement -> assignment .)
+    CCURLB          reduce using rule 5 (statement -> assignment .)
 
 
 state 5
 
-    (8) declaration -> TYPE . IDENTIFIER SEMIC
-    (9) declaration -> TYPE . IDENTIFIER EQUALS expression SEMIC
+    (6) statement -> prt .
 
-    IDENTIFIER      shift and go to state 12
+    TYPE            reduce using rule 6 (statement -> prt .)
+    IDENTIFIER      reduce using rule 6 (statement -> prt .)
+    PRINT           reduce using rule 6 (statement -> prt .)
+    NS              reduce using rule 6 (statement -> prt .)
+    IF              reduce using rule 6 (statement -> prt .)
+    $end            reduce using rule 6 (statement -> prt .)
+    CCURLB          reduce using rule 6 (statement -> prt .)
 
 
 state 6
 
-    (7) directives -> NS . DIRECTIVES LIBRARIES
+    (7) statement -> directives .
 
-    DIRECTIVES      shift and go to state 13
+    TYPE            reduce using rule 7 (statement -> directives .)
+    IDENTIFIER      reduce using rule 7 (statement -> directives .)
+    PRINT           reduce using rule 7 (statement -> directives .)
+    NS              reduce using rule 7 (statement -> directives .)
+    IF              reduce using rule 7 (statement -> directives .)
+    $end            reduce using rule 7 (statement -> directives .)
+    CCURLB          reduce using rule 7 (statement -> directives .)
 
 
 state 7
 
-    (1) statements -> statements statement .
-    (4) statement -> statement . assignment
-    (5) statement -> statement . prt
-    (10) assignment -> . IDENTIFIER EQUALS expression SEMIC
-    (11) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (8) statement -> ifst .
 
-    TYPE            reduce using rule 1 (statements -> statements statement .)
-    NS              reduce using rule 1 (statements -> statements statement .)
-    $end            reduce using rule 1 (statements -> statements statement .)
-    IDENTIFIER      shift and go to state 10
-    PRINT           shift and go to state 11
+    TYPE            reduce using rule 8 (statement -> ifst .)
+    IDENTIFIER      reduce using rule 8 (statement -> ifst .)
+    PRINT           reduce using rule 8 (statement -> ifst .)
+    NS              reduce using rule 8 (statement -> ifst .)
+    IF              reduce using rule 8 (statement -> ifst .)
+    $end            reduce using rule 8 (statement -> ifst .)
+    CCURLB          reduce using rule 8 (statement -> ifst .)
 
-    assignment                     shift and go to state 8
-    prt                            shift and go to state 9
 
 state 8
 
-    (4) statement -> statement assignment .
+    (10) declaration -> TYPE . IDENTIFIER SEMIC
+    (11) declaration -> TYPE . IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> TYPE . IDENTIFIER EQUALS valbool SEMIC
 
-    IDENTIFIER      reduce using rule 4 (statement -> statement assignment .)
-    PRINT           reduce using rule 4 (statement -> statement assignment .)
-    TYPE            reduce using rule 4 (statement -> statement assignment .)
-    NS              reduce using rule 4 (statement -> statement assignment .)
-    $end            reduce using rule 4 (statement -> statement assignment .)
+    IDENTIFIER      shift and go to state 14
 
 
 state 9
 
-    (5) statement -> statement prt .
+    (13) assignment -> IDENTIFIER . EQUALS expression SEMIC
 
-    IDENTIFIER      reduce using rule 5 (statement -> statement prt .)
-    PRINT           reduce using rule 5 (statement -> statement prt .)
-    TYPE            reduce using rule 5 (statement -> statement prt .)
-    NS              reduce using rule 5 (statement -> statement prt .)
-    $end            reduce using rule 5 (statement -> statement prt .)
+    EQUALS          shift and go to state 15
 
 
 state 10
 
-    (10) assignment -> IDENTIFIER . EQUALS expression SEMIC
+    (14) prt -> PRINT . LPAREN expression RPAREN SEMIC
 
-    EQUALS          shift and go to state 14
+    LPAREN          shift and go to state 16
 
 
 state 11
 
-    (11) prt -> PRINT . LPAREN expression RPAREN SEMIC
+    (9) directives -> NS . DIRECTIVES LIBRARIES
 
-    LPAREN          shift and go to state 15
+    DIRECTIVES      shift and go to state 17
 
 
 state 12
 
-    (8) declaration -> TYPE IDENTIFIER . SEMIC
-    (9) declaration -> TYPE IDENTIFIER . EQUALS expression SEMIC
+    (15) ifst -> IF . LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> IF . LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
 
-    SEMIC           shift and go to state 16
-    EQUALS          shift and go to state 17
+    LPAREN          shift and go to state 18
 
 
 state 13
 
-    (7) directives -> NS DIRECTIVES . LIBRARIES
+    (1) statements -> statements statement .
 
-    LIBRARIES       shift and go to state 18
+    TYPE            reduce using rule 1 (statements -> statements statement .)
+    IDENTIFIER      reduce using rule 1 (statements -> statements statement .)
+    PRINT           reduce using rule 1 (statements -> statements statement .)
+    NS              reduce using rule 1 (statements -> statements statement .)
+    IF              reduce using rule 1 (statements -> statements statement .)
+    $end            reduce using rule 1 (statements -> statements statement .)
+    CCURLB          reduce using rule 1 (statements -> statements statement .)
 
 
 state 14
 
-    (10) assignment -> IDENTIFIER EQUALS . expression SEMIC
-    (12) expression -> . expression PLUS term
-    (13) expression -> . expression MINUS term
-    (19) expression -> . term
-    (14) term -> . term TIMES factor
-    (15) term -> . term DIVIDE factor
-    (20) term -> . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (10) declaration -> TYPE IDENTIFIER . SEMIC
+    (11) declaration -> TYPE IDENTIFIER . EQUALS expression SEMIC
+    (12) declaration -> TYPE IDENTIFIER . EQUALS valbool SEMIC
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    SEMIC           shift and go to state 19
+    EQUALS          shift and go to state 20
 
-    expression                     shift and go to state 20
-    term                           shift and go to state 21
-    factor                         shift and go to state 22
-    value                          shift and go to state 25
 
 state 15
 
-    (11) prt -> PRINT LPAREN . expression RPAREN SEMIC
-    (12) expression -> . expression PLUS term
-    (13) expression -> . expression MINUS term
-    (19) expression -> . term
-    (14) term -> . term TIMES factor
-    (15) term -> . term DIVIDE factor
-    (20) term -> . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (13) assignment -> IDENTIFIER EQUALS . expression SEMIC
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
-    expression                     shift and go to state 28
-    term                           shift and go to state 21
-    factor                         shift and go to state 22
-    value                          shift and go to state 25
+    expression                     shift and go to state 22
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 16
 
-    (8) declaration -> TYPE IDENTIFIER SEMIC .
+    (14) prt -> PRINT LPAREN . expression RPAREN SEMIC
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    IDENTIFIER      reduce using rule 8 (declaration -> TYPE IDENTIFIER SEMIC .)
-    PRINT           reduce using rule 8 (declaration -> TYPE IDENTIFIER SEMIC .)
-    TYPE            reduce using rule 8 (declaration -> TYPE IDENTIFIER SEMIC .)
-    NS              reduce using rule 8 (declaration -> TYPE IDENTIFIER SEMIC .)
-    $end            reduce using rule 8 (declaration -> TYPE IDENTIFIER SEMIC .)
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    expression                     shift and go to state 31
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 17
 
-    (9) declaration -> TYPE IDENTIFIER EQUALS . expression SEMIC
-    (12) expression -> . expression PLUS term
-    (13) expression -> . expression MINUS term
-    (19) expression -> . term
-    (14) term -> . term TIMES factor
-    (15) term -> . term DIVIDE factor
-    (20) term -> . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (9) directives -> NS DIRECTIVES . LIBRARIES
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    LIBRARIES       shift and go to state 32
 
-    expression                     shift and go to state 29
-    term                           shift and go to state 21
-    factor                         shift and go to state 22
-    value                          shift and go to state 25
 
 state 18
 
-    (7) directives -> NS DIRECTIVES LIBRARIES .
+    (15) ifst -> IF LPAREN . valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> IF LPAREN . valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+    (24) valbool -> . VAL_BOOL
+    (25) valbool -> . LPAREN valbool RPAREN
+    (26) valbool -> . expression OP_BOOL expression
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    IDENTIFIER      reduce using rule 7 (directives -> NS DIRECTIVES LIBRARIES .)
-    PRINT           reduce using rule 7 (directives -> NS DIRECTIVES LIBRARIES .)
-    TYPE            reduce using rule 7 (directives -> NS DIRECTIVES LIBRARIES .)
-    NS              reduce using rule 7 (directives -> NS DIRECTIVES LIBRARIES .)
-    $end            reduce using rule 7 (directives -> NS DIRECTIVES LIBRARIES .)
+    VAL_BOOL        shift and go to state 35
+    LPAREN          shift and go to state 33
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    valbool                        shift and go to state 34
+    expression                     shift and go to state 36
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 19
 
-    (22) factor -> IDENTIFIER .
+    (10) declaration -> TYPE IDENTIFIER SEMIC .
 
-    TIMES           reduce using rule 22 (factor -> IDENTIFIER .)
-    DIVIDE          reduce using rule 22 (factor -> IDENTIFIER .)
-    SEMIC           reduce using rule 22 (factor -> IDENTIFIER .)
-    PLUS            reduce using rule 22 (factor -> IDENTIFIER .)
-    MINUS           reduce using rule 22 (factor -> IDENTIFIER .)
-    RPAREN          reduce using rule 22 (factor -> IDENTIFIER .)
-    NUMBER          reduce using rule 22 (factor -> IDENTIFIER .)
+    TYPE            reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
+    IDENTIFIER      reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
+    PRINT           reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
+    NS              reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
+    IF              reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
+    $end            reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
+    CCURLB          reduce using rule 10 (declaration -> TYPE IDENTIFIER SEMIC .)
 
 
 state 20
 
-    (10) assignment -> IDENTIFIER EQUALS expression . SEMIC
-    (12) expression -> expression . PLUS term
-    (13) expression -> expression . MINUS term
+    (11) declaration -> TYPE IDENTIFIER EQUALS . expression SEMIC
+    (12) declaration -> TYPE IDENTIFIER EQUALS . valbool SEMIC
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (24) valbool -> . VAL_BOOL
+    (25) valbool -> . LPAREN valbool RPAREN
+    (26) valbool -> . expression OP_BOOL expression
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    SEMIC           shift and go to state 30
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
+    VAL_BOOL        shift and go to state 35
+    LPAREN          shift and go to state 33
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    expression                     shift and go to state 37
+    valbool                        shift and go to state 38
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 21
 
-    (19) expression -> term .
-    (14) term -> term . TIMES factor
-    (15) term -> term . DIVIDE factor
+    (30) factor -> IDENTIFIER .
 
-    SEMIC           reduce using rule 19 (expression -> term .)
-    PLUS            reduce using rule 19 (expression -> term .)
-    MINUS           reduce using rule 19 (expression -> term .)
-    RPAREN          reduce using rule 19 (expression -> term .)
-    TIMES           shift and go to state 33
-    DIVIDE          shift and go to state 34
+    TIMES           reduce using rule 30 (factor -> IDENTIFIER .)
+    DIVIDE          reduce using rule 30 (factor -> IDENTIFIER .)
+    SEMIC           reduce using rule 30 (factor -> IDENTIFIER .)
+    PLUS            reduce using rule 30 (factor -> IDENTIFIER .)
+    MINUS           reduce using rule 30 (factor -> IDENTIFIER .)
+    RPAREN          reduce using rule 30 (factor -> IDENTIFIER .)
+    OP_BOOL         reduce using rule 30 (factor -> IDENTIFIER .)
+    NUMBER          reduce using rule 30 (factor -> IDENTIFIER .)
 
 
 state 22
 
-    (20) term -> factor .
+    (13) assignment -> IDENTIFIER EQUALS expression . SEMIC
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
 
-    TIMES           reduce using rule 20 (term -> factor .)
-    DIVIDE          reduce using rule 20 (term -> factor .)
-    SEMIC           reduce using rule 20 (term -> factor .)
-    PLUS            reduce using rule 20 (term -> factor .)
-    MINUS           reduce using rule 20 (term -> factor .)
-    RPAREN          reduce using rule 20 (term -> factor .)
+    SEMIC           shift and go to state 39
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
 
 state 23
 
-    (16) factor -> EXP . LPAREN factor value RPAREN
+    (27) expression -> term .
+    (19) term -> term . TIMES factor
+    (20) term -> term . DIVIDE factor
 
-    LPAREN          shift and go to state 35
+    SEMIC           reduce using rule 27 (expression -> term .)
+    PLUS            reduce using rule 27 (expression -> term .)
+    MINUS           reduce using rule 27 (expression -> term .)
+    RPAREN          reduce using rule 27 (expression -> term .)
+    OP_BOOL         reduce using rule 27 (expression -> term .)
+    TIMES           shift and go to state 42
+    DIVIDE          shift and go to state 43
 
 
 state 24
 
-    (23) factor -> LPAREN . expression RPAREN
-    (12) expression -> . expression PLUS term
-    (13) expression -> . expression MINUS term
-    (19) expression -> . term
-    (14) term -> . term TIMES factor
-    (15) term -> . term DIVIDE factor
-    (20) term -> . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (32) factor -> MINUS . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
-    expression                     shift and go to state 36
-    term                           shift and go to state 21
-    factor                         shift and go to state 22
-    value                          shift and go to state 25
+    factor                         shift and go to state 44
+    value                          shift and go to state 28
 
 state 25
 
-    (21) factor -> value .
+    (28) term -> factor .
 
-    TIMES           reduce using rule 21 (factor -> value .)
-    DIVIDE          reduce using rule 21 (factor -> value .)
-    SEMIC           reduce using rule 21 (factor -> value .)
-    PLUS            reduce using rule 21 (factor -> value .)
-    MINUS           reduce using rule 21 (factor -> value .)
-    RPAREN          reduce using rule 21 (factor -> value .)
-    NUMBER          reduce using rule 21 (factor -> value .)
+    TIMES           reduce using rule 28 (term -> factor .)
+    DIVIDE          reduce using rule 28 (term -> factor .)
+    SEMIC           reduce using rule 28 (term -> factor .)
+    PLUS            reduce using rule 28 (term -> factor .)
+    MINUS           reduce using rule 28 (term -> factor .)
+    RPAREN          reduce using rule 28 (term -> factor .)
+    OP_BOOL         reduce using rule 28 (term -> factor .)
 
 
 state 26
 
-    (17) factor -> SQR . LPAREN factor RPAREN
+    (21) factor -> EXP . LPAREN factor value RPAREN
 
-    LPAREN          shift and go to state 37
+    LPAREN          shift and go to state 45
 
 
 state 27
 
-    (18) value -> NUMBER .
+    (31) factor -> LPAREN . expression RPAREN
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    TIMES           reduce using rule 18 (value -> NUMBER .)
-    DIVIDE          reduce using rule 18 (value -> NUMBER .)
-    SEMIC           reduce using rule 18 (value -> NUMBER .)
-    PLUS            reduce using rule 18 (value -> NUMBER .)
-    MINUS           reduce using rule 18 (value -> NUMBER .)
-    RPAREN          reduce using rule 18 (value -> NUMBER .)
-    NUMBER          reduce using rule 18 (value -> NUMBER .)
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    expression                     shift and go to state 46
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 28
 
-    (11) prt -> PRINT LPAREN expression . RPAREN SEMIC
-    (12) expression -> expression . PLUS term
-    (13) expression -> expression . MINUS term
+    (29) factor -> value .
 
-    RPAREN          shift and go to state 38
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
+    TIMES           reduce using rule 29 (factor -> value .)
+    DIVIDE          reduce using rule 29 (factor -> value .)
+    SEMIC           reduce using rule 29 (factor -> value .)
+    PLUS            reduce using rule 29 (factor -> value .)
+    MINUS           reduce using rule 29 (factor -> value .)
+    RPAREN          reduce using rule 29 (factor -> value .)
+    OP_BOOL         reduce using rule 29 (factor -> value .)
+    NUMBER          reduce using rule 29 (factor -> value .)
 
 
 state 29
 
-    (9) declaration -> TYPE IDENTIFIER EQUALS expression . SEMIC
-    (12) expression -> expression . PLUS term
-    (13) expression -> expression . MINUS term
+    (22) factor -> SQR . LPAREN factor RPAREN
 
-    SEMIC           shift and go to state 39
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
+    LPAREN          shift and go to state 47
 
 
 state 30
 
-    (10) assignment -> IDENTIFIER EQUALS expression SEMIC .
+    (23) value -> NUMBER .
 
-    IDENTIFIER      reduce using rule 10 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    PRINT           reduce using rule 10 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    TYPE            reduce using rule 10 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    NS              reduce using rule 10 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
-    $end            reduce using rule 10 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    TIMES           reduce using rule 23 (value -> NUMBER .)
+    DIVIDE          reduce using rule 23 (value -> NUMBER .)
+    SEMIC           reduce using rule 23 (value -> NUMBER .)
+    PLUS            reduce using rule 23 (value -> NUMBER .)
+    MINUS           reduce using rule 23 (value -> NUMBER .)
+    RPAREN          reduce using rule 23 (value -> NUMBER .)
+    OP_BOOL         reduce using rule 23 (value -> NUMBER .)
+    NUMBER          reduce using rule 23 (value -> NUMBER .)
 
 
 state 31
 
-    (12) expression -> expression PLUS . term
-    (14) term -> . term TIMES factor
-    (15) term -> . term DIVIDE factor
-    (20) term -> . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (14) prt -> PRINT LPAREN expression . RPAREN SEMIC
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    RPAREN          shift and go to state 48
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
-    term                           shift and go to state 40
-    factor                         shift and go to state 22
-    value                          shift and go to state 25
 
 state 32
 
-    (13) expression -> expression MINUS . term
-    (14) term -> . term TIMES factor
-    (15) term -> . term DIVIDE factor
-    (20) term -> . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (9) directives -> NS DIRECTIVES LIBRARIES .
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    TYPE            reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
+    IDENTIFIER      reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
+    PRINT           reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
+    NS              reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
+    IF              reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
+    $end            reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
+    CCURLB          reduce using rule 9 (directives -> NS DIRECTIVES LIBRARIES .)
 
-    term                           shift and go to state 41
-    factor                         shift and go to state 22
-    value                          shift and go to state 25
 
 state 33
 
-    (14) term -> term TIMES . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (25) valbool -> LPAREN . valbool RPAREN
+    (31) factor -> LPAREN . expression RPAREN
+    (24) valbool -> . VAL_BOOL
+    (25) valbool -> . LPAREN valbool RPAREN
+    (26) valbool -> . expression OP_BOOL expression
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    VAL_BOOL        shift and go to state 35
+    LPAREN          shift and go to state 33
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
-    factor                         shift and go to state 42
-    value                          shift and go to state 25
+    valbool                        shift and go to state 49
+    expression                     shift and go to state 50
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 34
 
-    (15) term -> term DIVIDE . factor
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (15) ifst -> IF LPAREN valbool . RPAREN OCURLB statements CCURLB
+    (16) ifst -> IF LPAREN valbool . RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    RPAREN          shift and go to state 51
 
-    factor                         shift and go to state 43
-    value                          shift and go to state 25
 
 state 35
 
-    (16) factor -> EXP LPAREN . factor value RPAREN
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (24) valbool -> VAL_BOOL .
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    RPAREN          reduce using rule 24 (valbool -> VAL_BOOL .)
+    SEMIC           reduce using rule 24 (valbool -> VAL_BOOL .)
 
-    factor                         shift and go to state 44
-    value                          shift and go to state 25
 
 state 36
 
-    (23) factor -> LPAREN expression . RPAREN
-    (12) expression -> expression . PLUS term
-    (13) expression -> expression . MINUS term
+    (26) valbool -> expression . OP_BOOL expression
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
 
-    RPAREN          shift and go to state 45
-    PLUS            shift and go to state 31
-    MINUS           shift and go to state 32
+    OP_BOOL         shift and go to state 52
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
 
 state 37
 
-    (17) factor -> SQR LPAREN . factor RPAREN
-    (16) factor -> . EXP LPAREN factor value RPAREN
-    (17) factor -> . SQR LPAREN factor RPAREN
-    (21) factor -> . value
-    (22) factor -> . IDENTIFIER
-    (23) factor -> . LPAREN expression RPAREN
-    (18) value -> . NUMBER
+    (11) declaration -> TYPE IDENTIFIER EQUALS expression . SEMIC
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
+    (26) valbool -> expression . OP_BOOL expression
 
-    EXP             shift and go to state 23
-    SQR             shift and go to state 26
-    IDENTIFIER      shift and go to state 19
-    LPAREN          shift and go to state 24
-    NUMBER          shift and go to state 27
+    SEMIC           shift and go to state 53
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+    OP_BOOL         shift and go to state 52
 
-    factor                         shift and go to state 46
-    value                          shift and go to state 25
 
 state 38
 
-    (11) prt -> PRINT LPAREN expression RPAREN . SEMIC
+    (12) declaration -> TYPE IDENTIFIER EQUALS valbool . SEMIC
 
-    SEMIC           shift and go to state 47
+    SEMIC           shift and go to state 54
 
 
 state 39
 
-    (9) declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .
+    (13) assignment -> IDENTIFIER EQUALS expression SEMIC .
 
-    IDENTIFIER      reduce using rule 9 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
-    PRINT           reduce using rule 9 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
-    TYPE            reduce using rule 9 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
-    NS              reduce using rule 9 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
-    $end            reduce using rule 9 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    TYPE            reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    IDENTIFIER      reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    PRINT           reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    NS              reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    IF              reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    $end            reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
+    CCURLB          reduce using rule 13 (assignment -> IDENTIFIER EQUALS expression SEMIC .)
 
 
 state 40
 
-    (12) expression -> expression PLUS term .
-    (14) term -> term . TIMES factor
-    (15) term -> term . DIVIDE factor
+    (17) expression -> expression PLUS . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    SEMIC           reduce using rule 12 (expression -> expression PLUS term .)
-    PLUS            reduce using rule 12 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 12 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 12 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 33
-    DIVIDE          shift and go to state 34
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    term                           shift and go to state 55
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 41
 
-    (13) expression -> expression MINUS term .
-    (14) term -> term . TIMES factor
-    (15) term -> term . DIVIDE factor
+    (18) expression -> expression MINUS . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    SEMIC           reduce using rule 13 (expression -> expression MINUS term .)
-    PLUS            reduce using rule 13 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 13 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 13 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 33
-    DIVIDE          shift and go to state 34
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    term                           shift and go to state 56
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
 
 state 42
 
-    (14) term -> term TIMES factor .
+    (19) term -> term TIMES . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    TIMES           reduce using rule 14 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 14 (term -> term TIMES factor .)
-    SEMIC           reduce using rule 14 (term -> term TIMES factor .)
-    PLUS            reduce using rule 14 (term -> term TIMES factor .)
-    MINUS           reduce using rule 14 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 14 (term -> term TIMES factor .)
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    factor                         shift and go to state 57
+    value                          shift and go to state 28
 
 state 43
 
-    (15) term -> term DIVIDE factor .
+    (20) term -> term DIVIDE . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    TIMES           reduce using rule 15 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 15 (term -> term DIVIDE factor .)
-    SEMIC           reduce using rule 15 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 15 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 15 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 15 (term -> term DIVIDE factor .)
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    factor                         shift and go to state 58
+    value                          shift and go to state 28
 
 state 44
 
-    (16) factor -> EXP LPAREN factor . value RPAREN
-    (18) value -> . NUMBER
+    (32) factor -> MINUS factor .
 
-    NUMBER          shift and go to state 27
+    TIMES           reduce using rule 32 (factor -> MINUS factor .)
+    DIVIDE          reduce using rule 32 (factor -> MINUS factor .)
+    SEMIC           reduce using rule 32 (factor -> MINUS factor .)
+    PLUS            reduce using rule 32 (factor -> MINUS factor .)
+    MINUS           reduce using rule 32 (factor -> MINUS factor .)
+    RPAREN          reduce using rule 32 (factor -> MINUS factor .)
+    OP_BOOL         reduce using rule 32 (factor -> MINUS factor .)
+    NUMBER          reduce using rule 32 (factor -> MINUS factor .)
 
-    value                          shift and go to state 48
 
 state 45
 
-    (23) factor -> LPAREN expression RPAREN .
+    (21) factor -> EXP LPAREN . factor value RPAREN
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    TIMES           reduce using rule 23 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 23 (factor -> LPAREN expression RPAREN .)
-    SEMIC           reduce using rule 23 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 23 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 23 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 23 (factor -> LPAREN expression RPAREN .)
-    NUMBER          reduce using rule 23 (factor -> LPAREN expression RPAREN .)
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    factor                         shift and go to state 59
+    value                          shift and go to state 28
 
 state 46
 
-    (17) factor -> SQR LPAREN factor . RPAREN
+    (31) factor -> LPAREN expression . RPAREN
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
 
-    RPAREN          shift and go to state 49
+    RPAREN          shift and go to state 60
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
 
 state 47
 
-    (11) prt -> PRINT LPAREN expression RPAREN SEMIC .
+    (22) factor -> SQR LPAREN . factor RPAREN
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
 
-    IDENTIFIER      reduce using rule 11 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    PRINT           reduce using rule 11 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    TYPE            reduce using rule 11 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    NS              reduce using rule 11 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
-    $end            reduce using rule 11 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
 
+    factor                         shift and go to state 61
+    value                          shift and go to state 28
 
 state 48
 
-    (16) factor -> EXP LPAREN factor value . RPAREN
+    (14) prt -> PRINT LPAREN expression RPAREN . SEMIC
 
-    RPAREN          shift and go to state 50
+    SEMIC           shift and go to state 62
 
 
 state 49
 
-    (17) factor -> SQR LPAREN factor RPAREN .
+    (25) valbool -> LPAREN valbool . RPAREN
 
-    TIMES           reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
-    DIVIDE          reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
-    SEMIC           reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
-    PLUS            reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
-    MINUS           reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
-    RPAREN          reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
-    NUMBER          reduce using rule 17 (factor -> SQR LPAREN factor RPAREN .)
+    RPAREN          shift and go to state 63
 
 
 state 50
 
-    (16) factor -> EXP LPAREN factor value RPAREN .
+    (31) factor -> LPAREN expression . RPAREN
+    (26) valbool -> expression . OP_BOOL expression
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
 
-    TIMES           reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
-    DIVIDE          reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
-    SEMIC           reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
-    PLUS            reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
-    MINUS           reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
-    RPAREN          reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
-    NUMBER          reduce using rule 16 (factor -> EXP LPAREN factor value RPAREN .)
+    RPAREN          shift and go to state 60
+    OP_BOOL         shift and go to state 52
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
+
+state 51
+
+    (15) ifst -> IF LPAREN valbool RPAREN . OCURLB statements CCURLB
+    (16) ifst -> IF LPAREN valbool RPAREN . OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+
+    OCURLB          shift and go to state 64
+
+
+state 52
+
+    (26) valbool -> expression OP_BOOL . expression
+    (17) expression -> . expression PLUS term
+    (18) expression -> . expression MINUS term
+    (27) expression -> . term
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (28) term -> . factor
+    (21) factor -> . EXP LPAREN factor value RPAREN
+    (22) factor -> . SQR LPAREN factor RPAREN
+    (29) factor -> . value
+    (30) factor -> . IDENTIFIER
+    (31) factor -> . LPAREN expression RPAREN
+    (32) factor -> . MINUS factor
+    (23) value -> . NUMBER
+
+    EXP             shift and go to state 26
+    SQR             shift and go to state 29
+    IDENTIFIER      shift and go to state 21
+    LPAREN          shift and go to state 27
+    MINUS           shift and go to state 24
+    NUMBER          shift and go to state 30
+
+    expression                     shift and go to state 65
+    term                           shift and go to state 23
+    factor                         shift and go to state 25
+    value                          shift and go to state 28
+
+state 53
+
+    (11) declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .
+
+    TYPE            reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    IDENTIFIER      reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    PRINT           reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    NS              reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    IF              reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    $end            reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+    CCURLB          reduce using rule 11 (declaration -> TYPE IDENTIFIER EQUALS expression SEMIC .)
+
+
+state 54
+
+    (12) declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .
+
+    TYPE            reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+    IDENTIFIER      reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+    PRINT           reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+    NS              reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+    IF              reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+    $end            reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+    CCURLB          reduce using rule 12 (declaration -> TYPE IDENTIFIER EQUALS valbool SEMIC .)
+
+
+state 55
+
+    (17) expression -> expression PLUS term .
+    (19) term -> term . TIMES factor
+    (20) term -> term . DIVIDE factor
+
+    SEMIC           reduce using rule 17 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 17 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 17 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 17 (expression -> expression PLUS term .)
+    OP_BOOL         reduce using rule 17 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 42
+    DIVIDE          shift and go to state 43
+
+
+state 56
+
+    (18) expression -> expression MINUS term .
+    (19) term -> term . TIMES factor
+    (20) term -> term . DIVIDE factor
+
+    SEMIC           reduce using rule 18 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 18 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 18 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 18 (expression -> expression MINUS term .)
+    OP_BOOL         reduce using rule 18 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 42
+    DIVIDE          shift and go to state 43
+
+
+state 57
+
+    (19) term -> term TIMES factor .
+
+    TIMES           reduce using rule 19 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 19 (term -> term TIMES factor .)
+    SEMIC           reduce using rule 19 (term -> term TIMES factor .)
+    PLUS            reduce using rule 19 (term -> term TIMES factor .)
+    MINUS           reduce using rule 19 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 19 (term -> term TIMES factor .)
+    OP_BOOL         reduce using rule 19 (term -> term TIMES factor .)
+
+
+state 58
+
+    (20) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 20 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 20 (term -> term DIVIDE factor .)
+    SEMIC           reduce using rule 20 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 20 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 20 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 20 (term -> term DIVIDE factor .)
+    OP_BOOL         reduce using rule 20 (term -> term DIVIDE factor .)
+
+
+state 59
+
+    (21) factor -> EXP LPAREN factor . value RPAREN
+    (23) value -> . NUMBER
+
+    NUMBER          shift and go to state 30
+
+    value                          shift and go to state 66
+
+state 60
+
+    (31) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    SEMIC           reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    OP_BOOL         reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    NUMBER          reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+
+
+state 61
+
+    (22) factor -> SQR LPAREN factor . RPAREN
+
+    RPAREN          shift and go to state 67
+
+
+state 62
+
+    (14) prt -> PRINT LPAREN expression RPAREN SEMIC .
+
+    TYPE            reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    IDENTIFIER      reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    PRINT           reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    NS              reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    IF              reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    $end            reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+    CCURLB          reduce using rule 14 (prt -> PRINT LPAREN expression RPAREN SEMIC .)
+
+
+state 63
+
+    (25) valbool -> LPAREN valbool RPAREN .
+
+    RPAREN          reduce using rule 25 (valbool -> LPAREN valbool RPAREN .)
+    SEMIC           reduce using rule 25 (valbool -> LPAREN valbool RPAREN .)
+
+
+state 64
+
+    (15) ifst -> IF LPAREN valbool RPAREN OCURLB . statements CCURLB
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB . statements CCURLB ELSE OCURLB statements CCURLB
+    (1) statements -> . statements statement
+    (2) statements -> . statement
+    (3) statements -> .
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . prt
+    (7) statement -> . directives
+    (8) statement -> . ifst
+    (10) declaration -> . TYPE IDENTIFIER SEMIC
+    (11) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> . TYPE IDENTIFIER EQUALS valbool SEMIC
+    (13) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (14) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (9) directives -> . NS DIRECTIVES LIBRARIES
+    (15) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+
+  ! shift/reduce conflict for TYPE resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for NS resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+    CCURLB          reduce using rule 3 (statements -> .)
+    TYPE            shift and go to state 8
+    IDENTIFIER      shift and go to state 9
+    PRINT           shift and go to state 10
+    NS              shift and go to state 11
+    IF              shift and go to state 12
+
+  ! TYPE            [ reduce using rule 3 (statements -> .) ]
+  ! IDENTIFIER      [ reduce using rule 3 (statements -> .) ]
+  ! PRINT           [ reduce using rule 3 (statements -> .) ]
+  ! NS              [ reduce using rule 3 (statements -> .) ]
+  ! IF              [ reduce using rule 3 (statements -> .) ]
+
+    statements                     shift and go to state 68
+    statement                      shift and go to state 2
+    declaration                    shift and go to state 3
+    assignment                     shift and go to state 4
+    prt                            shift and go to state 5
+    directives                     shift and go to state 6
+    ifst                           shift and go to state 7
+
+state 65
+
+    (26) valbool -> expression OP_BOOL expression .
+    (17) expression -> expression . PLUS term
+    (18) expression -> expression . MINUS term
+
+    RPAREN          reduce using rule 26 (valbool -> expression OP_BOOL expression .)
+    SEMIC           reduce using rule 26 (valbool -> expression OP_BOOL expression .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+
+
+state 66
+
+    (21) factor -> EXP LPAREN factor value . RPAREN
+
+    RPAREN          shift and go to state 69
+
+
+state 67
+
+    (22) factor -> SQR LPAREN factor RPAREN .
+
+    TIMES           reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    DIVIDE          reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    SEMIC           reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    PLUS            reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    MINUS           reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    RPAREN          reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    OP_BOOL         reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+    NUMBER          reduce using rule 22 (factor -> SQR LPAREN factor RPAREN .)
+
+
+state 68
+
+    (15) ifst -> IF LPAREN valbool RPAREN OCURLB statements . CCURLB
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB statements . CCURLB ELSE OCURLB statements CCURLB
+    (1) statements -> statements . statement
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . prt
+    (7) statement -> . directives
+    (8) statement -> . ifst
+    (10) declaration -> . TYPE IDENTIFIER SEMIC
+    (11) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> . TYPE IDENTIFIER EQUALS valbool SEMIC
+    (13) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (14) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (9) directives -> . NS DIRECTIVES LIBRARIES
+    (15) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+
+    CCURLB          shift and go to state 70
+    TYPE            shift and go to state 8
+    IDENTIFIER      shift and go to state 9
+    PRINT           shift and go to state 10
+    NS              shift and go to state 11
+    IF              shift and go to state 12
+
+    statement                      shift and go to state 13
+    declaration                    shift and go to state 3
+    assignment                     shift and go to state 4
+    prt                            shift and go to state 5
+    directives                     shift and go to state 6
+    ifst                           shift and go to state 7
+
+state 69
+
+    (21) factor -> EXP LPAREN factor value RPAREN .
+
+    TIMES           reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    DIVIDE          reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    SEMIC           reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    PLUS            reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    MINUS           reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    RPAREN          reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    OP_BOOL         reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+    NUMBER          reduce using rule 21 (factor -> EXP LPAREN factor value RPAREN .)
+
+
+state 70
+
+    (15) ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB . ELSE OCURLB statements CCURLB
+
+    TYPE            reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    IDENTIFIER      reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    PRINT           reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    NS              reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    IF              reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    $end            reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    CCURLB          reduce using rule 15 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB .)
+    ELSE            shift and go to state 71
+
+
+state 71
+
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE . OCURLB statements CCURLB
+
+    OCURLB          shift and go to state 72
+
+
+state 72
+
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB . statements CCURLB
+    (1) statements -> . statements statement
+    (2) statements -> . statement
+    (3) statements -> .
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . prt
+    (7) statement -> . directives
+    (8) statement -> . ifst
+    (10) declaration -> . TYPE IDENTIFIER SEMIC
+    (11) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> . TYPE IDENTIFIER EQUALS valbool SEMIC
+    (13) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (14) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (9) directives -> . NS DIRECTIVES LIBRARIES
+    (15) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+
+  ! shift/reduce conflict for TYPE resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for NS resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+    CCURLB          reduce using rule 3 (statements -> .)
+    TYPE            shift and go to state 8
+    IDENTIFIER      shift and go to state 9
+    PRINT           shift and go to state 10
+    NS              shift and go to state 11
+    IF              shift and go to state 12
+
+  ! TYPE            [ reduce using rule 3 (statements -> .) ]
+  ! IDENTIFIER      [ reduce using rule 3 (statements -> .) ]
+  ! PRINT           [ reduce using rule 3 (statements -> .) ]
+  ! NS              [ reduce using rule 3 (statements -> .) ]
+  ! IF              [ reduce using rule 3 (statements -> .) ]
+
+    statements                     shift and go to state 73
+    statement                      shift and go to state 2
+    declaration                    shift and go to state 3
+    assignment                     shift and go to state 4
+    prt                            shift and go to state 5
+    directives                     shift and go to state 6
+    ifst                           shift and go to state 7
+
+state 73
+
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements . CCURLB
+    (1) statements -> statements . statement
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . prt
+    (7) statement -> . directives
+    (8) statement -> . ifst
+    (10) declaration -> . TYPE IDENTIFIER SEMIC
+    (11) declaration -> . TYPE IDENTIFIER EQUALS expression SEMIC
+    (12) declaration -> . TYPE IDENTIFIER EQUALS valbool SEMIC
+    (13) assignment -> . IDENTIFIER EQUALS expression SEMIC
+    (14) prt -> . PRINT LPAREN expression RPAREN SEMIC
+    (9) directives -> . NS DIRECTIVES LIBRARIES
+    (15) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB
+    (16) ifst -> . IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB
+
+    CCURLB          shift and go to state 74
+    TYPE            shift and go to state 8
+    IDENTIFIER      shift and go to state 9
+    PRINT           shift and go to state 10
+    NS              shift and go to state 11
+    IF              shift and go to state 12
+
+    statement                      shift and go to state 13
+    declaration                    shift and go to state 3
+    assignment                     shift and go to state 4
+    prt                            shift and go to state 5
+    directives                     shift and go to state 6
+    ifst                           shift and go to state 7
+
+state 74
+
+    (16) ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .
+
+    TYPE            reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+    IDENTIFIER      reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+    PRINT           reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+    NS              reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+    IF              reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+    $end            reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+    CCURLB          reduce using rule 16 (ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for TYPE in state 0 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 0 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 0 resolved as shift
+WARNING: shift/reduce conflict for NS in state 0 resolved as shift
+WARNING: shift/reduce conflict for IF in state 0 resolved as shift
+WARNING: shift/reduce conflict for TYPE in state 64 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 64 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 64 resolved as shift
+WARNING: shift/reduce conflict for NS in state 64 resolved as shift
+WARNING: shift/reduce conflict for IF in state 64 resolved as shift
+WARNING: shift/reduce conflict for TYPE in state 72 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 72 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 72 resolved as shift
+WARNING: shift/reduce conflict for NS in state 72 resolved as shift
+WARNING: shift/reduce conflict for IF in state 72 resolved as shift

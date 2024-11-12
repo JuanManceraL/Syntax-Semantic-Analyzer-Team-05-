@@ -2,9 +2,37 @@ Falta en la asignación pasar variables (creo)   YA !
 bibliotecas                                 YA ! (Si se quieren agregar constantes nomás actualizar)
 if - else
 Y parentesis para las op aritmeticas        YA !
+Constantes
+Compentarios
 
 Los codigos que se estan usando son:
   main.py
   Syntax.py
   Lexer_ayuda.py
   ejemplo.c
+
+  # include stdio.h
+# include math.h
+int a;
+int b;
+int c = 4+2;
+a = 3 + 3;
+printf(5+3*45*2);
+a = exp(3 2);
+a = sqr(sqr(16));
+c = exp (sqr(exp(5 2)) 2);
+int d;
+d = a;
+d = 3*(4+5);
+d = 3*4+5;
+if () {
+    printf(4+2);
+} else {
+    printf(4-2);
+}
+
+if decision == 1 {
+    x = (-b + sqr(exp(b 2) - 4*a*c)) / (2 * a);
+} else {
+    x = (-b - sqr(exp(b 2) - 4*a*c)) / (2 * a);
+}
