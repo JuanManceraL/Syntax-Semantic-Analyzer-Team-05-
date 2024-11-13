@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CCURLB DIRECTIVES DIVIDE ELSE EQUALS EXP IDENTIFIER IF LIBRARIES LPAREN MINUS NS NUMBER OCURLB OP_BOOL PLUS PRINT RPAREN SEMIC SQR TIMES TYPE VAL_BOOLstatements   : statements statement\n                    | statement\n                    | statement    : declaration\n                    | assignment\n                    | prt\n                    | directives\n                    | ifstdirectives  : NS DIRECTIVES LIBRARIESdeclaration  : TYPE IDENTIFIER SEMIC\n                    | TYPE IDENTIFIER EQUALS expression SEMICassignment   : IDENTIFIER EQUALS expression SEMICprt  : PRINT LPAREN expression RPAREN SEMICifst : IF LPAREN valbool RPAREN OCURLB statements CCURLB\n            | IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLBexpression   : expression PLUS termexpression   : expression MINUS termterm : term TIMES factorterm : term DIVIDE factorfactor : EXP LPAREN factor value RPARENfactor : SQR LPAREN factor RPARENvalue   : NUMBER valbool     : VAL_BOOL\n                    | LPAREN valbool RPAREN\n                    | expression OP_BOOL expressionexpression   : termterm : factorfactor   : value\n                | IDENTIFIER\n                | LPAREN expression RPAREN\n                | MINUS factor'
+_lr_signature = 'CCURLB DIRECTIVES DIVIDE ELSE EQUALS EXP IDENTIFIER IF LIBRARIES LPAREN MINUS NS NUMBER OCURLB OP_BOOL PLUS PRINT RPAREN SEMIC SQR TIMES TYPE VAL_BOOLprogram  : code\n                | code : code statement \n            | statementstatement    : declaration\n                    | assignment\n                    | prt\n                    | directives\n                    | ifstdirectives  : NS DIRECTIVES LIBRARIESdeclaration  : TYPE IDENTIFIER SEMIC\n                    | TYPE IDENTIFIER EQUALS expression SEMICassignment   : IDENTIFIER EQUALS expression SEMICprt  : PRINT LPAREN expression RPAREN SEMICifst : IF LPAREN valbool RPAREN OCURLB program CCURLB\n            | IF LPAREN valbool RPAREN OCURLB program CCURLB ELSE OCURLB program CCURLBexpression   : expression PLUS termexpression   : expression MINUS termterm : term TIMES factorterm : term DIVIDE factorfactor : EXP LPAREN factor value RPARENfactor : SQR LPAREN factor RPARENvalue   : NUMBER valbool     : VAL_BOOL\n                    | LPAREN valbool RPAREN\n                    | expression OP_BOOL expressionexpression   : termterm : factorfactor   : value\n                | IDENTIFIER\n                | LPAREN expression RPAREN\n                | MINUS factor'
     
-_lr_action_items = {'TYPE':([0,1,2,3,4,5,6,7,13,19,32,38,52,60,62,66,68,70,71,72,],[8,8,-2,-4,-5,-6,-7,-8,-1,-10,-9,-12,-11,-13,8,8,-14,8,8,-15,]),'IDENTIFIER':([0,1,2,3,4,5,6,7,8,13,15,16,18,19,20,24,27,32,33,38,39,40,41,42,44,46,51,52,60,62,66,68,70,71,72,],[9,9,-2,-4,-5,-6,-7,-8,14,-1,21,21,21,-10,21,21,21,-9,21,-12,21,21,21,21,21,21,21,-11,-13,9,9,-14,9,9,-15,]),'PRINT':([0,1,2,3,4,5,6,7,13,19,32,38,52,60,62,66,68,70,71,72,],[10,10,-2,-4,-5,-6,-7,-8,-1,-10,-9,-12,-11,-13,10,10,-14,10,10,-15,]),'NS':([0,1,2,3,4,5,6,7,13,19,32,38,52,60,62,66,68,70,71,72,],[11,11,-2,-4,-5,-6,-7,-8,-1,-10,-9,-12,-11,-13,11,11,-14,11,11,-15,]),'IF':([0,1,2,3,4,5,6,7,13,19,32,38,52,60,62,66,68,70,71,72,],[12,12,-2,-4,-5,-6,-7,-8,-1,-10,-9,-12,-11,-13,12,12,-14,12,12,-15,]),'$end':([0,1,2,3,4,5,6,7,13,19,32,38,52,60,68,72,],[-3,0,-2,-4,-5,-6,-7,-8,-1,-10,-9,-12,-11,-13,-14,-15,]),'CCURLB':([2,3,4,5,6,7,13,19,32,38,52,60,62,66,68,70,71,72,],[-2,-4,-5,-6,-7,-8,-1,-10,-9,-12,-11,-13,-3,68,-14,-3,72,-15,]),'EQUALS':([9,14,],[15,20,]),'LPAREN':([10,12,15,16,18,20,24,26,27,29,33,39,40,41,42,44,46,51,],[16,18,27,27,33,27,27,44,27,46,33,27,27,27,27,27,27,27,]),'DIRECTIVES':([11,],[17,]),'SEMIC':([14,21,22,23,25,28,30,37,43,47,53,54,55,56,58,65,67,],[19,-29,38,-26,-27,-28,-22,52,-31,60,-16,-17,-18,-19,-30,-21,-20,]),'EXP':([15,16,18,20,24,27,33,39,40,41,42,44,46,51,],[26,26,26,26,26,26,26,26,26,26,26,26,26,26,]),'SQR':([15,16,18,20,24,27,33,39,40,41,42,44,46,51,],[29,29,29,29,29,29,29,29,29,29,29,29,29,29,]),'MINUS':([15,16,18,20,21,22,23,24,25,27,28,30,31,33,36,37,39,40,41,42,43,44,45,46,49,51,53,54,55,56,58,63,65,67,],[24,24,24,24,-29,40,-26,24,-27,24,-28,-22,40,24,40,40,24,24,24,24,-31,24,40,24,40,24,-16,-17,-18,-19,-30,40,-21,-20,]),'NUMBER':([15,16,18,20,21,24,27,28,30,33,39,40,41,42,43,44,46,51,57,58,65,67,],[30,30,30,30,-29,30,30,-28,-22,30,30,30,30,30,-31,30,30,30,30,-30,-21,-20,]),'LIBRARIES':([17,],[32,]),'VAL_BOOL':([18,33,],[35,35,]),'TIMES':([21,23,25,28,30,43,53,54,55,56,58,65,67,],[-29,41,-27,-28,-22,-31,41,41,-18,-19,-30,-21,-20,]),'DIVIDE':([21,23,25,28,30,43,53,54,55,56,58,65,67,],[-29,42,-27,-28,-22,-31,42,42,-18,-19,-30,-21,-20,]),'PLUS':([21,22,23,25,28,30,31,36,37,43,45,49,53,54,55,56,58,63,65,67,],[-29,39,-26,-27,-28,-22,39,39,39,-31,39,39,-16,-17,-18,-19,-30,39,-21,-20,]),'RPAREN':([21,23,25,28,30,31,34,35,43,45,48,49,53,54,55,56,58,59,61,63,64,65,67,],[-29,-26,-27,-28,-22,47,50,-23,-31,58,61,58,-16,-17,-18,-19,-30,65,-24,-25,67,-21,-20,]),'OP_BOOL':([21,23,25,28,30,36,43,49,53,54,55,56,58,65,67,],[-29,-26,-27,-28,-22,51,-31,51,-16,-17,-18,-19,-30,-21,-20,]),'OCURLB':([50,69,],[62,70,]),'ELSE':([68,],[69,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,8,14,20,33,39,53,61,69,73,],[-2,0,-1,-4,-5,-6,-7,-8,-9,-3,-11,-10,-13,-12,-14,-15,-16,]),'TYPE':([0,2,3,4,5,6,7,8,14,20,33,39,53,61,63,69,71,73,],[9,9,-4,-5,-6,-7,-8,-9,-3,-11,-10,-13,-12,-14,9,-15,9,-16,]),'IDENTIFIER':([0,2,3,4,5,6,7,8,9,14,16,17,19,20,21,25,28,33,34,39,40,41,42,43,45,47,52,53,61,63,69,71,73,],[10,10,-4,-5,-6,-7,-8,-9,15,-3,22,22,22,-11,22,22,22,-10,22,-13,22,22,22,22,22,22,22,-12,-14,10,-15,10,-16,]),'PRINT':([0,2,3,4,5,6,7,8,14,20,33,39,53,61,63,69,71,73,],[11,11,-4,-5,-6,-7,-8,-9,-3,-11,-10,-13,-12,-14,11,-15,11,-16,]),'NS':([0,2,3,4,5,6,7,8,14,20,33,39,53,61,63,69,71,73,],[12,12,-4,-5,-6,-7,-8,-9,-3,-11,-10,-13,-12,-14,12,-15,12,-16,]),'IF':([0,2,3,4,5,6,7,8,14,20,33,39,53,61,63,69,71,73,],[13,13,-4,-5,-6,-7,-8,-9,-3,-11,-10,-13,-12,-14,13,-15,13,-16,]),'CCURLB':([2,3,4,5,6,7,8,14,20,33,39,53,61,63,67,69,71,72,73,],[-1,-4,-5,-6,-7,-8,-9,-3,-11,-10,-13,-12,-14,-2,69,-15,-2,73,-16,]),'EQUALS':([10,15,],[16,21,]),'LPAREN':([11,13,16,17,19,21,25,27,28,30,34,40,41,42,43,45,47,52,],[17,19,28,28,34,28,28,45,28,47,34,28,28,28,28,28,28,28,]),'DIRECTIVES':([12,],[18,]),'SEMIC':([15,22,23,24,26,29,31,38,44,48,54,55,56,57,59,66,68,],[20,-30,39,-27,-28,-29,-23,53,-32,61,-17,-18,-19,-20,-31,-22,-21,]),'EXP':([16,17,19,21,25,28,34,40,41,42,43,45,47,52,],[27,27,27,27,27,27,27,27,27,27,27,27,27,27,]),'SQR':([16,17,19,21,25,28,34,40,41,42,43,45,47,52,],[30,30,30,30,30,30,30,30,30,30,30,30,30,30,]),'MINUS':([16,17,19,21,22,23,24,25,26,28,29,31,32,34,37,38,40,41,42,43,44,45,46,47,50,52,54,55,56,57,59,64,66,68,],[25,25,25,25,-30,41,-27,25,-28,25,-29,-23,41,25,41,41,25,25,25,25,-32,25,41,25,41,25,-17,-18,-19,-20,-31,41,-22,-21,]),'NUMBER':([16,17,19,21,22,25,28,29,31,34,40,41,42,43,44,45,47,52,58,59,66,68,],[31,31,31,31,-30,31,31,-29,-23,31,31,31,31,31,-32,31,31,31,31,-31,-22,-21,]),'LIBRARIES':([18,],[33,]),'VAL_BOOL':([19,34,],[36,36,]),'TIMES':([22,24,26,29,31,44,54,55,56,57,59,66,68,],[-30,42,-28,-29,-23,-32,42,42,-19,-20,-31,-22,-21,]),'DIVIDE':([22,24,26,29,31,44,54,55,56,57,59,66,68,],[-30,43,-28,-29,-23,-32,43,43,-19,-20,-31,-22,-21,]),'PLUS':([22,23,24,26,29,31,32,37,38,44,46,50,54,55,56,57,59,64,66,68,],[-30,40,-27,-28,-29,-23,40,40,40,-32,40,40,-17,-18,-19,-20,-31,40,-22,-21,]),'RPAREN':([22,24,26,29,31,32,35,36,44,46,49,50,54,55,56,57,59,60,62,64,65,66,68,],[-30,-27,-28,-29,-23,48,51,-24,-32,59,62,59,-17,-18,-19,-20,-31,66,-25,-26,68,-22,-21,]),'OP_BOOL':([22,24,26,29,31,37,44,50,54,55,56,57,59,66,68,],[-30,-27,-28,-29,-23,52,-32,52,-17,-18,-19,-20,-31,-22,-21,]),'OCURLB':([51,70,],[63,71,]),'ELSE':([69,],[70,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statements':([0,62,70,],[1,66,71,]),'statement':([0,1,62,66,70,71,],[2,13,2,13,2,13,]),'declaration':([0,1,62,66,70,71,],[3,3,3,3,3,3,]),'assignment':([0,1,62,66,70,71,],[4,4,4,4,4,4,]),'prt':([0,1,62,66,70,71,],[5,5,5,5,5,5,]),'directives':([0,1,62,66,70,71,],[6,6,6,6,6,6,]),'ifst':([0,1,62,66,70,71,],[7,7,7,7,7,7,]),'expression':([15,16,18,20,27,33,51,],[22,31,36,37,45,49,63,]),'term':([15,16,18,20,27,33,39,40,51,],[23,23,23,23,23,23,53,54,23,]),'factor':([15,16,18,20,24,27,33,39,40,41,42,44,46,51,],[25,25,25,25,43,25,25,25,25,55,56,57,59,25,]),'value':([15,16,18,20,24,27,33,39,40,41,42,44,46,51,57,],[28,28,28,28,28,28,28,28,28,28,28,28,28,28,64,]),'valbool':([18,33,],[34,48,]),}
+_lr_goto_items = {'program':([0,63,71,],[1,67,72,]),'code':([0,63,71,],[2,2,2,]),'statement':([0,2,63,71,],[3,14,3,3,]),'declaration':([0,2,63,71,],[4,4,4,4,]),'assignment':([0,2,63,71,],[5,5,5,5,]),'prt':([0,2,63,71,],[6,6,6,6,]),'directives':([0,2,63,71,],[7,7,7,7,]),'ifst':([0,2,63,71,],[8,8,8,8,]),'expression':([16,17,19,21,28,34,52,],[23,32,37,38,46,50,64,]),'term':([16,17,19,21,28,34,40,41,52,],[24,24,24,24,24,24,54,55,24,]),'factor':([16,17,19,21,25,28,34,40,41,42,43,45,47,52,],[26,26,26,26,44,26,26,26,26,56,57,58,60,26,]),'value':([16,17,19,21,25,28,34,40,41,42,43,45,47,52,58,],[29,29,29,29,29,29,29,29,29,29,29,29,29,29,65,]),'valbool':([19,34,],[35,49,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,36 +26,37 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statements","S'",1,None,None,None),
-  ('statements -> statements statement','statements',2,'p_program','Syntax.py',12),
-  ('statements -> statement','statements',1,'p_program','Syntax.py',13),
-  ('statements -> <empty>','statements',0,'p_program','Syntax.py',14),
-  ('statement -> declaration','statement',1,'p_statement','Syntax.py',22),
-  ('statement -> assignment','statement',1,'p_statement','Syntax.py',23),
-  ('statement -> prt','statement',1,'p_statement','Syntax.py',24),
-  ('statement -> directives','statement',1,'p_statement','Syntax.py',25),
-  ('statement -> ifst','statement',1,'p_statement','Syntax.py',26),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> code','program',1,'p_program','Syntax.py',14),
+  ('program -> <empty>','program',0,'p_program','Syntax.py',15),
+  ('code -> code statement','code',2,'p_code','Syntax.py',19),
+  ('code -> statement','code',1,'p_code','Syntax.py',20),
+  ('statement -> declaration','statement',1,'p_statement','Syntax.py',23),
+  ('statement -> assignment','statement',1,'p_statement','Syntax.py',24),
+  ('statement -> prt','statement',1,'p_statement','Syntax.py',25),
+  ('statement -> directives','statement',1,'p_statement','Syntax.py',26),
+  ('statement -> ifst','statement',1,'p_statement','Syntax.py',27),
   ('directives -> NS DIRECTIVES LIBRARIES','directives',3,'p_directives','Syntax.py',31),
   ('declaration -> TYPE IDENTIFIER SEMIC','declaration',3,'p_declaration','Syntax.py',35),
   ('declaration -> TYPE IDENTIFIER EQUALS expression SEMIC','declaration',5,'p_declaration','Syntax.py',36),
-  ('assignment -> IDENTIFIER EQUALS expression SEMIC','assignment',4,'p_assignment','Syntax.py',50),
-  ('prt -> PRINT LPAREN expression RPAREN SEMIC','prt',5,'p_print','Syntax.py',60),
-  ('ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB','ifst',7,'p_if','Syntax.py',65),
-  ('ifst -> IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB','ifst',11,'p_if','Syntax.py',66),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','Syntax.py',71),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','Syntax.py',76),
-  ('term -> term TIMES factor','term',3,'p_term_times','Syntax.py',81),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','Syntax.py',86),
-  ('factor -> EXP LPAREN factor value RPAREN','factor',5,'p_factor_exp','Syntax.py',91),
-  ('factor -> SQR LPAREN factor RPAREN','factor',4,'p_factor_sqr','Syntax.py',96),
-  ('value -> NUMBER','value',1,'p_values_num','Syntax.py',101),
-  ('valbool -> VAL_BOOL','valbool',1,'p_value_bool','Syntax.py',106),
-  ('valbool -> LPAREN valbool RPAREN','valbool',3,'p_value_bool','Syntax.py',107),
-  ('valbool -> expression OP_BOOL expression','valbool',3,'p_value_bool','Syntax.py',108),
-  ('expression -> term','expression',1,'p_expression_term','Syntax.py',127),
-  ('term -> factor','term',1,'p_term_factor','Syntax.py',132),
-  ('factor -> value','factor',1,'p_factor_value','Syntax.py',137),
-  ('factor -> IDENTIFIER','factor',1,'p_factor_value','Syntax.py',138),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_value','Syntax.py',139),
-  ('factor -> MINUS factor','factor',2,'p_factor_value','Syntax.py',140),
+  ('assignment -> IDENTIFIER EQUALS expression SEMIC','assignment',4,'p_assignment','Syntax.py',73),
+  ('prt -> PRINT LPAREN expression RPAREN SEMIC','prt',5,'p_print','Syntax.py',96),
+  ('ifst -> IF LPAREN valbool RPAREN OCURLB program CCURLB','ifst',7,'p_if','Syntax.py',101),
+  ('ifst -> IF LPAREN valbool RPAREN OCURLB program CCURLB ELSE OCURLB program CCURLB','ifst',11,'p_if','Syntax.py',102),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','Syntax.py',107),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','Syntax.py',116),
+  ('term -> term TIMES factor','term',3,'p_term_times','Syntax.py',126),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','Syntax.py',136),
+  ('factor -> EXP LPAREN factor value RPAREN','factor',5,'p_factor_exp','Syntax.py',145),
+  ('factor -> SQR LPAREN factor RPAREN','factor',4,'p_factor_sqr','Syntax.py',155),
+  ('value -> NUMBER','value',1,'p_values_num','Syntax.py',165),
+  ('valbool -> VAL_BOOL','valbool',1,'p_value_bool','Syntax.py',170),
+  ('valbool -> LPAREN valbool RPAREN','valbool',3,'p_value_bool','Syntax.py',171),
+  ('valbool -> expression OP_BOOL expression','valbool',3,'p_value_bool','Syntax.py',172),
+  ('expression -> term','expression',1,'p_expression_term','Syntax.py',191),
+  ('term -> factor','term',1,'p_term_factor','Syntax.py',196),
+  ('factor -> value','factor',1,'p_factor_value','Syntax.py',201),
+  ('factor -> IDENTIFIER','factor',1,'p_factor_value','Syntax.py',202),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_value','Syntax.py',203),
+  ('factor -> MINUS factor','factor',2,'p_factor_value','Syntax.py',204),
 ]

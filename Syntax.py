@@ -11,10 +11,13 @@ Reduces = ""
 Shifts = ""
 
 def p_program(p):
-    """statements   : statements statement
-                    | statement
-                    | """
+    """program  : code
+                | """
     print(f"P <- S")
+
+def p_code(p):
+    """code : code statement 
+            | statement"""
 
 def p_statement(p):
     """statement    : declaration
@@ -95,8 +98,8 @@ def p_print(p):
     p[0] = p[1]
 
 def p_if(p):
-    """ifst : IF LPAREN valbool RPAREN OCURLB statements CCURLB
-            | IF LPAREN valbool RPAREN OCURLB statements CCURLB ELSE OCURLB statements CCURLB"""
+    """ifst : IF LPAREN valbool RPAREN OCURLB program CCURLB
+            | IF LPAREN valbool RPAREN OCURLB program CCURLB ELSE OCURLB program CCURLB"""
     print("Hubo un if :)")
 
 #Syntax for summ
