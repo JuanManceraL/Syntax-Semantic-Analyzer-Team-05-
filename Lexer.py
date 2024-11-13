@@ -6,7 +6,7 @@ keywords = {
     'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double',
     'else', 'enum', 'extern', 'float', 'for', 'goto', 'if', 'int', 'long', 'register',
     'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef',
-    'union', 'unsigned', 'void', 'volatile', 'while', 'printf', 'scanf'
+    'union', 'unsigned', 'void', 'volatile', 'while', 'printf', 'scanf', 'True', 'False'
 }
 
 # Lista de tokens
@@ -125,26 +125,6 @@ def main():
     print("1. Introducir código manualmente")
     print("2. Leer desde un archivo")
 
-#    
-#    opcion = input("Ingresa el número de la opción (1 o 2): ")
-#    if opcion == '1':
- #       print("Introduce el código a analizar (presiona Enter dos veces para finalizar):")
-#        codigo = []
-#        while True:
-#            linea = input()
-#            if linea == "":
-#                break
-#            codigo.append(linea)
-#        codigo = "\n".join(codigo)  # Unir las líneas en un solo bloque de código
-#    elif opcion == '2':
-#        ruta_archivo = input("Ingresa la ruta del archivo (ej. archivo.c o archivo.txt): ")
-#        if not os.path.isfile(ruta_archivo):
-#            print("El archivo especificado no existe.")
-#            return
-#        codigo = leer_archivo(ruta_archivo)
-#    else:
-#        print("Opción no válida.")
-##        return
     ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/Syntax-Semantic-Analyzer-Team-05-/ejemplo.c'
     if not os.path.isfile(ruta_archivo):
         print("El archivo especificado no existe.")

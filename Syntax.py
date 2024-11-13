@@ -7,16 +7,14 @@ def leer_archivo(ruta_archivo):
         return archivo.read()
 
 symbol_table = {}
+Reduces = ""
+Shifts = ""
 
 def p_program(p):
     """statements   : statements statement
                     | statement
                     | """
     print(f"P <- S")
-    #print(p[1])
-
-#def p_declaration(p):
-#    """declaration"""
 
 def p_statement(p):
     """statement    : declaration
@@ -25,7 +23,6 @@ def p_statement(p):
                     | directives
                     | ifst""" 
     print(f"S <- S")
-    #p[0] = p[1]
 
 def p_directives(p):
     """directives  : NS DIRECTIVES LIBRARIES"""
@@ -33,19 +30,41 @@ def p_directives(p):
 
 def p_declaration(p):
     """declaration  : TYPE IDENTIFIER SEMIC
-                    | TYPE IDENTIFIER EQUALS expression SEMIC
-                    | TYPE IDENTIFIER EQUALS valbool SEMIC """
+                    | TYPE IDENTIFIER EQUALS expression SEMIC"""
+    var_type = p[1]
     var_name = p[2]
     if var_name in symbol_table:
         print(f"Error: La variable '{var_name}' ya fue declarada.")
+        raise SystemExit
     else:
-        symbol_table[var_name] = None
-        if p[3] == '=':
-            print(f"Declaración y asignación: {var_name}")
-            print(f"D(S) <- {p[1]} {p[2]}{p[3]}{p[4]}{p[5]}")
+        if len(p) > 4 and p[3] == '=':
+            if p[4] == None:
+                print(f"Error: No se puede asignar un valor nulo a una variable")
+                raise SystemExit
+            elif (p[1] == 'int'):
+                valueNum = abs(p[4])
+                if (valueNum - int(valueNum) != 0):
+                    print(f"Error: No se puede asignar un flotante en una variable entera")
+                    raise SystemExit
+                else:
+                    print(f"Asignación: {var_name} = {int(p[4])}")
+                    symbol_table[var_name] = {'Identifier': var_name, 'Type': var_type, 'Value': int(p[4])}
+                    print(f"Declaración y asignación: {var_name}")
+                    print(f"D(S) <- {p[1]} {p[2]}{p[3]}{p[4]}{p[5]}")
+                    print_symbol_table()
+            else:   
+                print(f"Asignación: {var_name} = {p[4]}")
+                symbol_table[var_name] = {'Identifier': var_name, 'Type': var_type, 'Value': p[4]}
+                print(f"Declaración y asignación: {var_name}")
+                print(f"D(S) <- {p[1]} {p[2]}{p[3]}{p[4]}{p[5]}")
+                print_symbol_table()
+            
+            
         else:
             print(f"Declaración: {var_name}")
             print(f"D(S) <- {p[1]} {p[2]}{p[3]}")
+            symbol_table[var_name] = {'Identifier': var_name, 'Type': var_type, 'Value': None}
+    print_symbol_table()  
 
 def p_assignment(p):
     """assignment   : IDENTIFIER EQUALS expression SEMIC"""
@@ -53,9 +72,22 @@ def p_assignment(p):
     var_name = p[1]
     if var_name not in symbol_table:
         print(f"Error: La variable '{var_name}' no está declarada.")
+        raise SystemExit
     else:
-        symbol_table[var_name] = p[3]
-        print(f"Asignación: {var_name} = {p[3]}")
+        valueNum = abs(p[3])
+        if (symbol_table[var_name]['Type'] == 'int'):
+            if (valueNum - int(valueNum) != 0):
+                print(f"Error: No se puede asignar un flotante en una variable entera")
+                raise SystemExit
+            else:
+                symbol_table[var_name]['Value'] = int(p[3])
+                print(f"Asignación: {var_name} = {int(p[3])}")
+                print_symbol_table()
+        else:
+            symbol_table[var_name]['Value'] = p[3]
+            print(f"Asignación: {var_name} = {p[3]}")
+            print_symbol_table()
+            
 
 def p_print(p):
     """prt  : PRINT LPAREN expression RPAREN SEMIC"""
@@ -70,33 +102,61 @@ def p_if(p):
 #Syntax for summ
 def p_expression_plus(p):
     """expression   : expression PLUS term"""
-    p[0] = p[1] + p[3]
-    print(f"E <- {p[1]}{p[2]}{p[3]}")
+    if((p[1] != None) and ((p[3] != None))):
+        p[0] = p[1] + p[3]
+        print(f"E <- {p[1]}{p[2]}{p[3]}")
+    else:
+        print(f"Error: No se pueden sumar variables nulas")
+        raise SystemExit
 
 def p_expression_minus(p):
     """expression   : expression MINUS term"""
-    p[0] = p[1] - p[3]
-    print(f"E <- {p[1]}{p[2]}{p[3]}")
+    if((p[1] != None) and ((p[3] != None))):
+        p[0] = p[1] - p[3]
+        print(f"E <- {p[1]}{p[2]}{p[3]}")
+    else:
+        print(f"Error: No se pueden restar variables nulas")
+        raise SystemExit
+    
 
 def p_term_times(p):
     """term : term TIMES factor"""
-    p[0] = p[1] * p[3]
-    print(f"T <- {p[1]} * {p[3]}")
+    if((p[1] != None) and ((p[3] != None))):
+        p[0] = p[1] * p[3]
+        print(f"T <- {p[1]} * {p[3]}")
+    else:
+        print(f"Error: No se pueden multiplicar variables nulas")
+        raise SystemExit
+    
 
 def p_term_div(p):
     """term : term DIVIDE factor"""
-    p[0] = p[1] / p[3]
-    print(f"T <- {p[1]} / {p[3]}")
-
+    if((p[1] != None) and ((p[3] != None))):
+        p[0] = p[1] / p[3]
+        print(f"T <- {p[1]} / {p[3]}")
+    else:
+        print(f"Error: No se pueden dividir variables nulas")
+        raise SystemExit
+    
 def p_factor_exp(p):
     """factor : EXP LPAREN factor value RPAREN"""
-    print(f"Exponiendo {p[3]} a la {p[4]} = {p[3]**p[4]}")
-    p[0] = p[3]**p[4]
+    if((p[3] != None) and ((p[4] != None))):
+        print(f"Elevando {p[3]} a la {p[4]} = {p[3]**p[4]}")
+        p[0] = p[3]**p[4]
+    else:
+        print(f"Error: No se pueden elevar a la potencia variables nulas")
+        raise SystemExit
+    
 
 def p_factor_sqr(p):
     """factor : SQR LPAREN factor RPAREN"""
-    print(f"Raizcuadreando a {p[3]} = {math.sqrt(p[3])}")
-    p[0] = math.sqrt(p[3])
+    if(p[3] != None):
+        print(f"Raiz cuadrada de {p[3]} = {math.sqrt(p[3])}")
+        p[0] = math.sqrt(p[3])
+    else:
+        print(f"Error: No se pueden elevar a la potencia variables nulas")
+        raise SystemExit
+    
 
 def p_values_num(p):
     """value   : NUMBER"""
@@ -125,7 +185,7 @@ def p_value_bool(p):
     print(f"V <- B {Val}")
 
 def p_expression_term(p):
-    """expression   : term""" #expression
+    """expression   : term""" 
     p[0] = p[1]
     print(f"E <- T {p[1]}")
 
@@ -139,16 +199,21 @@ def p_factor_value(p):
                 | IDENTIFIER
                 | LPAREN expression RPAREN
                 | MINUS factor"""
-    if not str(p[1]).isnumeric:
-        var_name = p[1]
-        if not var_name in symbol_table:
-            print(f"Error: La variable '{var_name}' no existe declarada.")
+    if p[1] == '-':
+        p[0] = (-1)*p[2]
+        print(f"F <- V {p[2]}")
     elif p[1] == '(':
         p[0] = p[2]
         print(f"F <- V {p[2]}")
-    elif p[1] == '-':
-        p[0] = (-1)*p[2]
-        print(f"F <- V {p[2]}")
+    elif not str(p[1])[0].isnumeric():
+        var_name = p[1]
+        if not var_name in symbol_table:
+            print(f"Error: La variable '{var_name}' no existe declarada.")
+            raise SystemExit
+        else:
+            ref_val = symbol_table[var_name]['Value']
+            p[0] = ref_val
+            print(f"F <- Var_val {ref_val}")
     else:
         p[0] = p[1]
         print(f"F <- V {p[1]}")
@@ -158,30 +223,41 @@ def p_error(p):
     print("Syntax error in input!")
     if p:
         print(f"Error de sintaxis en '{p.value}'")
+        raise SystemExit
     else:
         print("Error de sintaxis al final de la entrada")
+        raise SystemExit
+
+def print_symbol_table():
+    print("\nTabla de Símbolos:")
+    print("{:<15} {:<10} {:<10}".format("Identificador", "Tipo", "Valor"))
+    print("-" * 35)
+    for var_name, attributes in symbol_table.items():
+
+        if isinstance(attributes, dict):
+            var_type = attributes.get("Type", "N/A")
+            var_value = attributes.get("Value", "N/A")
+        else:
+            
+            var_type = "N/A"
+            var_value = str(attributes)  
+        
+        if var_value is None:
+            var_value = "N/A"
+
+        print("{:<15} {:<10} {:<10}".format(var_name, var_type, var_value))
+    print("-" * 35)
+
+def saveMessages(Type, Message):
+    match Type:
+        #From input Buffer
+        case "Shift":
+            Shifts += Message + "\n"
+        #No terminals
+        case "Reduce":
+            Reduces += Message + "\n"
 
 #Build the parser
 parser = yacc.yacc()
 
-"""
-while True:
-    try:
-        s = input('calc > ')
-    except EOFError: 
-        break
-    if not s: continue
-    result = parser.parse(s)
-    print(result)
-"""
-#ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
-#if not os.path.isfile(ruta_archivo):
-#    print("El archivo especificado no existe.")
-#else:
-"""
-
-codigo = leer_archivo(ruta_archivo)
-result = parser.parse(codigo)
-print(result)
-parser = yacc.yacc()
-"""
+#print(Reduces)

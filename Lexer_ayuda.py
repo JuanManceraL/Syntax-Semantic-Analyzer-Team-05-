@@ -5,11 +5,11 @@ def leer_archivo(ruta_archivo):
         return archivo.read()
 
 keywords = {
-    'char', 'else', 'float', 'if', 'int', 'union', 'unsigned', 'void', 'volatile', 'while', 'printf', 'scanf', 'exp', 'sqr'
+    'else', 'float', 'if', 'int', 'void', 'printf','exp', 'sqr'
 }
 
 types = {
-    'int', 'bool', 'float'
+    'int', 'float' #, 'bool'
 }
 
 libraries = {
@@ -23,6 +23,7 @@ directives = {
 val_bool = {
     'True', 'False'
 }
+
 
 # List of token names.   This is always required
 tokens = (
@@ -82,8 +83,13 @@ t_OP_BOOL = r'(<=|>=|==|<|>)'
 
 # A regular expression rule with some action code
 def t_NUMBER(t):
-    r'\d+'
-    t.value = int(t.value)
+    r'\d+(\.\d+)?'
+    t.value = float(t.value)
+    return t
+
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)  # Convierte la cadena a un número de punto flotante
     return t
 
 # Define a rule so we can track line numbers
@@ -102,9 +108,3 @@ def t_error(t):
 # Build the lexer
 lexer = lex.lex()
 
-
-
-#ruta_archivo = 'C:/Users/juanm/Documents/Escuela/7mo semestre/Compiladores/Syntax_Semantica_Analyzer_Team_5/ejemplo.c'
-#codigo = leer_archivo(ruta_archivo)
-
-#lexer.input(codigo)

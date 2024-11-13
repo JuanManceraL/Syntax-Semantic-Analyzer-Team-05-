@@ -1,10 +1,3 @@
-Falta en la asignación pasar variables (creo)   YA !
-bibliotecas                                 YA ! (Si se quieren agregar constantes nomás actualizar)
-if - else
-Y parentesis para las op aritmeticas        YA !
-Constantes
-Compentarios
-
 Los codigos que se estan usando son:
   main.py
   Syntax.py
@@ -31,8 +24,17 @@ if () {
     printf(4-2);
 }
 
-if decision == 1 {
-    x = (-b + sqr(exp(b 2) - 4*a*c)) / (2 * a);
+int a = 1;
+int b = 5;
+int c = 6;
+int x;
+int decision = 1;
+
+if (decision == 1) {
+    x = (-b + sqr((exp(b 2) - 4*a*c))) / (2 * a);
 } else {
-    x = (-b - sqr(exp(b 2) - 4*a*c)) / (2 * a);
+    x = (-b - sqr((exp(b 2) - 4*a*c))) / (2 * a);
 }
+
+
+printf(x);
