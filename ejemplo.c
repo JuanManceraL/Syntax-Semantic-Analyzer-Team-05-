@@ -1,3 +1,14 @@
-int a = 4;
-float b = 3.3;
-int x = 5;
+int a = 1;
+int b = 5;
+int c = 6;
+int x;
+int decision = 1;
+
+if (decision == 1) {
+    x = (-b + sqr((exp(b 2) - 4*a*c))) / (2 * a);
+} else {
+    x = (-b - sqr((exp(b 2) - 4*a*c))) / (2 * a);
+}
+
+
+printf(x);
