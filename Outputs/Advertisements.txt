@@ -5,9 +5,9 @@ Declaración: x
 Declaración y asignación: decision = 1
 Elevando 5 a la 2.0 = 25.0
 Raiz cuadrada de 1.0 = 1.0
-Asignación: x = -2
+Asignación: x = -2.0
 Elevando 5 a la 2.0 = 25.0
 Raiz cuadrada de 1.0 = 1.0
-Asignación: x = -3
+Asignación: x = -3.0
 Cierre de un if
-Imprimiendo... Printf(-3)
+Imprimiendo... Printf(-3.0)

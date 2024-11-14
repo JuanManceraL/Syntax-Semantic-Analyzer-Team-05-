@@ -1,6 +1,7 @@
+
 import ply.yacc as yacc
 import math
-from Lexer_ayuda import tokens
+from Lexer import tokens
 
 symbol_table = {}
 Reduces = ""
@@ -10,7 +11,6 @@ Adv = ""
 def leer_archivo(ruta_archivo):
     with open(ruta_archivo, 'r') as archivo:
         return archivo.read()
-
 
 def p_program(p):
     """program  : code
@@ -261,11 +261,9 @@ def print_symbol_table():
 
 def saveMessages(Type, Message):
     global Upd_ST, Adv, Reduces
-    match Type:
-        #From input Buffer
+    match Type: 
         case "Advertisements":
             Adv += Message + "\n"
-        #No terminals
         case "Reduce":
             Reduces += Message + "\n"
         case "Symbol Table":

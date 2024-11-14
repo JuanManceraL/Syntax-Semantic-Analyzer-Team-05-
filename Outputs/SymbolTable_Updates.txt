@@ -30,7 +30,7 @@ Identificador   Tipo       Valor
 a               int        1         
 b               int        5         
 c               int        6         
-x               int        N/A       
+x               float      N/A       
 -----------------------------------
 
 
@@ -40,7 +40,7 @@ Identificador   Tipo       Valor
 a               int        1         
 b               int        5         
 c               int        6         
-x               int        N/A       
+x               float      N/A       
 decision        int        1         
 -----------------------------------
 
@@ -51,7 +51,7 @@ Identificador   Tipo       Valor
 a               int        1         
 b               int        5         
 c               int        6         
-x               int        -2        
+x               float      -2.0      
 decision        int        1         
 -----------------------------------
 
@@ -62,6 +62,6 @@ Identificador   Tipo       Valor
 a               int        1         
 b               int        5         
 c               int        6         
-x               int        -3        
+x               float      -3.0      
 decision        int        1         
 -----------------------------------

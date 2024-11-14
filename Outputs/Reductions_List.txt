@@ -19,7 +19,7 @@ E <- T 6.0
 D(S) <- int c=6.0;
 S <- S(esp)
 C <- C S
-D(S) <- int x;
+D(S) <- float x;
 S <- S(esp)
 C <- C S
 V <- N 1.0
@@ -112,10 +112,10 @@ P <- C
 ifst(S) <- if(True)
 S <- S(esp)
 C <- C S
-F <- Var_val -3
-T <- F -3
-E <- T -3
-P(S) <- Imprimiendo... Printf(-3)
+F <- Var_val -3.0
+T <- F -3.0
+E <- T -3.0
+P(S) <- Imprimiendo... Printf(-3.0)
 S <- S(esp)
 C <- C S
 P <- C
