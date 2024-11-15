@@ -1,12 +1,23 @@
+import sys
+import os
+
+# Obtener la ruta del directorio padre
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# Agregar el directorio padre al sys.path
+sys.path.append(parent_dir)
 
 import ply.yacc as yacc
 import math
-from Lexer import tokens
+from Lexer.Lexer import tokens
+import sys
 
 symbol_table = {}
 Reduces = ""
 Upd_ST = ""
 Adv = ""
+Output = "Parsing Success!\nSDT Verified!"
+Semantic_Errors = ""
 
 def leer_archivo(ruta_archivo):
     with open(ruta_archivo, 'r') as archivo:
@@ -44,18 +55,18 @@ def p_declaration(p):
     var_type = p[1]
     var_name = p[2]
     if var_name in symbol_table:
-        print(f"Error: La variable '{var_name}' ya fue declarada.")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: La variable '{var_name}' ya fue declarada.")
+        #raise SystemExit
     
     if len(p) > 4 and p[3] == '=':
         if p[4] == None:
-            print(f"Error: No se puede asignar un valor nulo a una variable")
-            raise SystemExit
+            saveMessages("SemErr", f"Error: No se puede asignar un valor nulo a una variable")
+            #raise SystemExit
         elif (p[1] == 'int'):
             valueNum = abs(p[4])
             if (valueNum - int(valueNum) != 0):
-                print(f"Error: No se puede asignar un flotante en una variable entera")
-                raise SystemExit
+                saveMessages("SemErr", f"Error: No se puede asignar un flotante en una variable entera")
+                #raise SystemExit
             else:
                 symbol_table[var_name] = {'Identifier': var_name, 'Type': var_type, 'Value': int(p[4])}
                 saveMessages("Advertisements",f"Declaración y asignación: {var_name} = {int(p[4])}")
@@ -77,14 +88,14 @@ def p_assignment(p):
     saveMessages("Reduce", f"A(S) <- {p[1]}{p[2]}{p[3]}{p[4]}")
     var_name = p[1]
     if var_name not in symbol_table:
-        print(f"Error: La variable '{var_name}' no está declarada.")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: La variable '{var_name}' no está declarada.")
+        #raise SystemExit
     else:
         valueNum = abs(p[3])
         if (symbol_table[var_name]['Type'] == 'int'):
             if (valueNum - int(valueNum) != 0):
-                print(f"Error: No se puede asignar un flotante en una variable entera")
-                raise SystemExit
+                saveMessages("SemErr", f"Error: No se puede asignar un flotante en una variable entera")
+                #raise SystemExit
             else:
                 symbol_table[var_name]['Value'] = int(p[3])
                 saveMessages("Advertisements", f"Asignación: {var_name} = {int(p[3])}")
@@ -114,8 +125,8 @@ def p_expression_plus(p):
         p[0] = p[1] + p[3]
         saveMessages("Reduce", f"E <- {p[1]}{p[2]}{p[3]}")
     else:
-        print(f"Error: No se pueden sumar variables nulas")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: No se pueden sumar variables nulas")
+        #raise SystemExit
 
 def p_expression_minus(p):
     """expression   : expression MINUS term"""
@@ -123,8 +134,8 @@ def p_expression_minus(p):
         p[0] = p[1] - p[3]
         saveMessages("Reduce", f"E <- {p[1]}{p[2]}{p[3]}")
     else:
-        print(f"Error: No se pueden restar variables nulas")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: No se pueden restar variables nulas")
+        #raise SystemExit
     
 
 def p_term_times(p):
@@ -133,8 +144,8 @@ def p_term_times(p):
         p[0] = p[1] * p[3]
         saveMessages("Reduce", f"T <- {p[1]} * {p[3]}")
     else:
-        print(f"Error: No se pueden multiplicar variables nulas")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: No se pueden multiplicar variables nulas")
+        #raise SystemExit
     
 
 def p_term_div(p):
@@ -143,8 +154,8 @@ def p_term_div(p):
         p[0] = p[1] / p[3]
         saveMessages("Reduce", f"T <- {p[1]} / {p[3]}")
     else:
-        print(f"Error: No se pueden dividir variables nulas")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: No se pueden dividir variables nulas")
+        #raise SystemExit
     
 def p_factor_exp(p):
     """factor : EXP LPAREN factor value RPAREN"""
@@ -153,8 +164,8 @@ def p_factor_exp(p):
         saveMessages("Reduce", f"F <- {p[1]}{p[2]}{p[3]} {p[4]}{p[5]}")
         p[0] = p[3]**p[4]
     else:
-        print(f"Error: No se pueden elevar a la potencia variables nulas")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: No se pueden elevar a la potencia variables nulas")
+        #raise SystemExit
     
 
 def p_factor_sqr(p):
@@ -164,8 +175,8 @@ def p_factor_sqr(p):
         saveMessages("Reduce", f"F <- {p[1]}{p[2]}{p[3]}{p[4]}")
         p[0] = math.sqrt(p[3])
     else:
-        print(f"Error: No se pueden elevar a la potencia variables nulas")
-        raise SystemExit
+        saveMessages("SemErr", f"Error: No se pueden elevar a la potencia variables nulas")
+        #raise SystemExit
     
 
 def p_values_num(p):
@@ -218,8 +229,8 @@ def p_factor_value(p):
     elif not str(p[1])[0].isnumeric():
         var_name = p[1]
         if not var_name in symbol_table:
-            print(f"Error: La variable '{var_name}' no existe declarada.")
-            raise SystemExit
+            saveMessages("SemErr", f"Error: La variable '{var_name}' no existe declarada.")
+            #raise SystemExit
         else:
             ref_val = symbol_table[var_name]['Value']
             p[0] = ref_val
@@ -231,13 +242,19 @@ def p_factor_value(p):
 #Error rule for syntax errors
 def p_error(p):
     saveMessages("Advertisements", "Syntax error in input!")
-    print("Syntax error in input!")
+    global Output
+    print("Parsing error...")
+    print("SDT error...\n")
     if p:
         print(f"Error de sintaxis en '{p.value}'")
-        raise SystemExit
+        Output = f"Parsing error...\nSDT error...\n\nError de sintaxis en '{p.value}'"
+        return
+        #raise SystemExit
     else:
         print("Error de sintaxis al final de la entrada")
-        raise SystemExit
+        Output = f"Parsing error...\nSDT error...\n\nError de sintaxis al final de la entrada"
+        return
+        #raise SystemExit
 
 def print_symbol_table():
     saveMessages("Symbol Table", "\n\nTabla de Símbolos:")
@@ -260,7 +277,7 @@ def print_symbol_table():
     saveMessages("Symbol Table", "-" * 35)
 
 def saveMessages(Type, Message):
-    global Upd_ST, Adv, Reduces
+    global Upd_ST, Adv, Reduces, Semantic_Errors
     match Type: 
         case "Advertisements":
             Adv += Message + "\n"
@@ -268,6 +285,17 @@ def saveMessages(Type, Message):
             Reduces += Message + "\n"
         case "Symbol Table":
             Upd_ST += Message + "\n"
+        case "SemErr":
+            Semantic_Errors += Message + "\n"
+
+def rebootVariables():
+    global symbol_table, Reduces, Upd_ST, Adv, Output, Semantic_Errors
+    symbol_table = {}
+    Reduces = ""
+    Upd_ST = ""
+    Adv = ""
+    Output = "Parsing Success!\nSDT Verified!"
+    Semantic_Errors = ""
 
 #Build the parser
 parser = yacc.yacc()
