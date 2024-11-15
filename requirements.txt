@@ -1,0 +1,6 @@
+Libraries: 
+  tkinter
+  time
+  pathlib
+  math
+  ply
